@@ -1,5 +1,5 @@
 /**
- * Class AccountHandler for account
+ * Class AccountHandler for eclipse
  *
  * Trigger Handler for the Account SObject. This class implements the ITrigger
  * interface to help ensure the trigger code is bulkified and all in one place.
