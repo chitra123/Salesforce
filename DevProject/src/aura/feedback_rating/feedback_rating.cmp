@@ -1,0 +1,26 @@
+<!--Description: Reusable Component for a 5 star rating mechanism with hover text for the rating stars
+-->
+<aura:component >
+
+    <!--Attribute list-->
+    <aura:attribute name="rating" type="String" default="0" access="public" />
+    <aura:attribute name="ratingID" type="String" access="public" required="true" />
+    <aura:attribute name="tooltipList" type="String" access="public" default="1,2,3,4,5" />
+    
+    <!--Handler list-->
+    <aura:registerEvent name="passRating" type="c:pass_rating"/>
+    <aura:handler name="change" value="{!v.rating}" action="{!c.changeRating}"/>
+    <div>
+        <!--Container for the 5 star feedback rating-->
+        <span class="star-rating">
+            <input type="radio" name="{!'rating'+v.ratingID}" value="1" data-title = "1" data-value="1" onclick="{!c.rate}" onmouseover="{!c.tooltip}" onmouseout="{!c.hideTooltip}" /><i></i>
+            <input type="radio" name="{!'rating'+v.ratingID}" value="2" data-title = "2" data-value="2" onclick="{!c.rate}" onmouseover="{!c.tooltip}" onmouseout="{!c.hideTooltip}" /><i></i>
+            <input type="radio" name="{!'rating'+v.ratingID}" value="3" data-title = "3" data-value="3" onclick="{!c.rate}" onmouseover="{!c.tooltip}" onmouseout="{!c.hideTooltip}" /><i></i>
+            <input type="radio" name="{!'rating'+v.ratingID}" value="4" data-title = "4" data-value="4" onclick="{!c.rate}" onmouseover="{!c.tooltip}" onmouseout="{!c.hideTooltip}" /><i></i>
+            <input type="radio" name="{!'rating'+v.ratingID}" value="5" data-title = "5" data-value="5" onclick="{!c.rate}" onmouseover="{!c.tooltip}" onmouseout="{!c.hideTooltip}" /><i></i>
+        </span>
+        <div class="slds-popover slds-popover--tooltip slds-nubbin--top-left" role="tooltip" id="{!'tooltip'+v.ratingID}">
+            <div class="slds-popover__body"></div>
+        </div>
+    </div>	
+</aura:component>

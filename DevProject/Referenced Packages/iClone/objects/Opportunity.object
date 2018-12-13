@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Cloned_from__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Cloned from</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Cloned Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <webLinks>
+        <fullName>Multi_iClone</fullName>
+        <availability>online</availability>
+        <description>Clone multiple reocrds</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>iClone</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/apex.js&quot;)} 
+
+//Get records selected by the user
+var selectedRecords= {!GETRECORDIDS( $ObjectType.Opportunity)}; 
+
+if (selectedRecords[0] == null) { 
+  alert(&quot;Please select record(s) to clone. Select Action to select all records.&quot;) 
+} 
+else {
+  if(confirm(&apos;This action will clone selected records. \nAre you sure?&apos;)) {       
+    var records = selectedRecords.toString().replace(/,/g, &quot;-&quot;); 
+    window.location = &apos;/apex/sfcloud1__iClone?records=&apos; + records;
+  }
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>iClone</fullName>
+        <availability>online</availability>
+        <description>Clone individual records</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>iClone</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)}
+
+window.location = &apos;/apex/sfcloud1__iClone?records={!Opportunity.Id}&apos;;</url>
+    </webLinks>
+</CustomObject>

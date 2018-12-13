@@ -1,0 +1,340 @@
+<apex:page action="{!initPage}" controller="sfcloud1.iClone_Configure" title="iClone :: Configure {!childLabel}" tabStyle="sfcloud1__iClone__c">
+
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js" ></script>
+    
+    <script type='text/javascript'>
+    
+        //Fix for IE9 and other browsers where console is not defined until developer mode is on. 
+        //For more info: http://stackoverflow.com/questions/5472938/does-ie9-support-console-log-and-is-it-a-real-function            
+        //Create a dummy function for console.log when the debugger is not active
+        if (!window.console) window.console = {};
+        if (!window.console.log) window.console.log = function () { };
+            
+        window.onload = function(){
+        
+            try{
+                $('.tblFields tr').each(function() {
+                    //console.log(this);
+                    var defaultValue_text = $(this).find('.defaultValue_text');
+                    var defaultValue_field = $(this).find('.defaultValue_field');
+                    var type = $(this).find('.type');
+                    var erase = $(this).find('.erase');
+                    
+                    //1. Copy value from inputText to inputField    
+                    if(defaultValue_text!=undefined && defaultValue_text.val()!=''){
+                        
+                        //Checkbox
+                        if($(defaultValue_field).is(':checkbox'))
+                            defaultValue_field.prop('checked', defaultValue_text.val()=='true');
+                        else
+                            defaultValue_field.val(defaultValue_text.val());
+                    }
+                    
+                    //2. Disable Type and Erase columns              
+                    if(type!=undefined && type.val()!=undefined && type.val().indexOf('*')>=0){
+                    	type.prop('disabled', true);
+                    	
+                    	if(type.val().indexOf('Unique')>=0){
+                        	erase.prop('checked', true);
+                        	erase.prop('disabled', true);
+                       	}                       	
+                    }
+                    
+                });
+            }
+            catch(err) {
+                console.log('onload() exception: ' + err.message);
+            } 
+        }      
+        
+    </script>
+
+    
+    <style>
+        .error {
+            color: red;
+            font-weight: strong;
+            font-size: 1.3em;
+        }
+        .error1 {
+            color: red;
+            font-weight: strong;
+            font-size: 1.1em;
+        }
+        .bold {
+            color: black;
+            font-size: 1.5em;
+        }
+        .bold1 {
+            font-size: 1em;
+        }
+    </style>
+    
+    <apex:pageMessages id="messages" escape="false" />
+    
+    <br />
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td style="width: 550px" class="error1">
+                    Click <a href="/{!returnURL}" title="Go back to previous page">here</a> to go back to previous page.                                
+                </td>
+                <td style="text-align: right;">
+                    <a href="https://appexchange.salesforce.com/listingDetail?listingId=a0N3000000B39tWEAR&tab=r" target="_blank" class="helpLink" title="Rate this app (New Window)">Rate this app</a> |  
+                    <a href="http://www.gocloudz.com/documentation-PDF/iClone-Usage-Guide.pdf" target="_blank" class="helpLink" title="Help for this Page (New Window)">
+                        {!$ObjectType.iClone__c.Label} Help 
+                    <img src="/s.gif" alt="" class="helpIcon" />
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br/>
+    
+    <apex:form > 
+    
+    	<!-- These functions will be called from JS, once the form is validated -->
+        <apex:actionFunction name="save" action="{!save}" reRender="pnlMsg, pnlFields" oncomplete="return false;" /> 
+        <!-- Call onload() to populate values from inputText to inputField  -->       
+        <apex:actionFunction name="quickSave" action="{!save}" reRender="pnlMsg, pnlFields" oncomplete="window.onload();" >
+            <apex:param name="quickSave" value="true" />
+        </apex:actionFunction>
+     
+        <apex:outputPanel id="pnlSelect" rendered="{!IF(options.size>1,true,false)}">            
+            <apex:outputLabel value="Select {!parentLabel} related list" styleClass="bold" /> 
+            &nbsp;
+            <apex:outputLabel value="(The field in parenthesis connects {!parentLabel} and the child object)" styleClass="bold1" />
+            <apex:pageBlock >  
+                <apex:selectList value="{!childObj_selected}" size="1" required="true" title="Select child object/related list." >
+                    <apex:selectOptions value="{!options}" /> 
+                    <apex:actionSupport event="onchange" action="{!getRecordType}" rerender="pnlSelect, pnlFields" status="loading1" oncomplete="window.onload();" />            
+                </apex:selectList> 
+                &nbsp;&nbsp;
+                <apex:selectList value="{!recordType_selected}" size="1" rendered="{!IF(optionsRecordType.size>1,true,false)}" title="Select reocrd type">
+                    <apex:selectOptions value="{!optionsRecordType}" />
+                    <apex:actionSupport event="onchange" action="{!getFields}" rerender="pnlSelect, pnlFields" status="loading1" oncomplete="window.onload();" /> 
+                </apex:selectList>
+                &nbsp;&nbsp;
+                <apex:actionStatus id="loading1"  startText=" (loading...)" />      
+                <br/><br/>
+                <apex:outputPanel rendered="{!childObj_selected!=''}" title="At time of cloning, do you want '{!childLabel}' records selected by default?" >
+                    <apex:inputCheckbox value="{!defaultFlag}" />        
+                    By default select all "<b>{!childLabel}</b>" records while cloning @ display order&nbsp;&nbsp;
+                    <apex:inputText value="{!orderObj}" maxlength="2" style="width:20px" title="Display order for '{!childLabel}' while cloning. Integer only." />
+                </apex:outputPanel>         
+            </apex:pageBlock>
+            <br/><br/>    
+        </apex:outputPanel>             
+                        
+        <apex:outputPanel id="pnlFields">  
+            <apex:outputLabel value="Configure {!childLabel} fields" styleClass="bold" rendered="{!wFields.size!=0 && NOT(ISNULL(wFields))}" /> 
+            <apex:pageBlock rendered="{!wFields.size!=0 && NOT(ISNULL(wFields))}">                
+                <apex:actionFunction action="{!sortFields}" name="sortFields" rerender="pnlFields"/>
+                <apex:pageBlockButtons location="both">                    
+                    <input type="button" class="btn save" value="Save" onclick="copyDefaultValues('save');" />
+                    <input type="button" class="btn quickSave" value="Quick Save" onclick="copyDefaultValues('quickSave');" />
+                    <br />
+                </apex:pageBlockButtons>
+                <apex:pageBlockTable id="tblFields" styleClass="tblFields" value="{!wFields}" var="w">
+                    <apex:column width="40px">
+                        <apex:facet name="header">      
+                            <apex:outputPanel >                              
+                                <apex:inputCheckbox id="selectAll" onchange="selectAll('{!$Component.tblFields}');" /> 
+                            </apex:outputPanel> 
+                        </apex:facet>
+                        <apex:inputCheckbox id="select" value="{!w.selected}" rendered="{!w.removed}" />
+                        <apex:commandLink value="Remove" rendered="{!NOT(w.removed)}" action="{!removeField}" reRender="pnlFields" status="loading1" immediate="true">
+                            <apex:param name="deleteField" value="{!w.field.Id}"/>
+                        </apex:commandLink><br/>
+                        <apex:actionStatus id="loading1" startText="loading..."/>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Order__c.Label}" title="Display order for '{!w.field.Name}' while cloning. Integer only.">
+                        <apex:inputField value="{!w.field.sfcloud1__Order__c}" onChange="sortFields()" style="width:20px" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.Name.Label}">
+                        <apex:outputField value="{!w.field.Name}" />&nbsp; 
+                        <apex:image styleClass="helpIcon" url="/s.gif" title="{!w.helpText}" alt="{!w.helpText}" rendered="{!If(w.helpText!=null, true, false)}" />           
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__API_Name__c.Label}">
+                        <apex:outputField value="{!w.field.sfcloud1__API_Name__c}" />                        
+                    </apex:column> 
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Default_Value__c.Label}">
+                        <apex:inputText value="{!w.field.sfcloud1__Default_Value__c}" style="display:none;" styleClass="defaultValue_text" /> 
+                        <apex:inputField value="{!sObj[w.field.sfcloud1__API_Name__c]}" required="false" rendered="{!AND(w.field.sfcloud1__Type__c!='Unique*', w.field.sfcloud1__Type__c!='Read Only*', w.field.sfcloud1__Field_Type__c!='TEXTAREA')}" styleClass="defaultValue_field" /> 
+                        <!-- Rich Text Area fields cannot be re-rendered, hence show them as normal text area fields -->
+                        <apex:inputTextarea value="{!sObj[w.field.sfcloud1__API_Name__c]}" required="false" rendered="{!AND(w.field.sfcloud1__Type__c!='Unique*', w.field.sfcloud1__Type__c!='Read Only*', w.field.sfcloud1__Field_Type__c='TEXTAREA')}" styleClass="defaultValue_field" rows="2" />
+                    </apex:column> 
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Type__c.Label}" title="Is '{!w.field.Name}' required or read only while cloning?">
+                        <apex:inputField id="type" value="{!w.field.sfcloud1__Type__c}" styleClass="type"/>
+                    </apex:column>                    
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Erase__c.Label}" title="Erase '{!w.field.Name}' while cloning?">
+                        <apex:inputField value="{!w.field.sfcloud1__Erase__c}" style="width:20px" styleClass="erase"/>
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Hide_Field__c.Label}" title="Hide '{!w.field.Name}' while cloning?">
+                        <apex:inputField value="{!w.field.sfcloud1__Hide_Field__c}" style="width:20px" styleClass="hide"/>
+                    </apex:column>                    
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Use_First_as_Master__c.Label}" title="Copy '{!w.field.Name}' from 1st record across all the records?">
+                        <apex:inputField value="{!w.field.sfcloud1__Use_First_as_Master__c}" style="width:20px" />
+                    </apex:column>
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Field_Type__c.Label}">
+                        <apex:outputField value="{!w.field.sfcloud1__Field_Type__c}" />                        
+                    </apex:column> 
+                    <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Is_Custom__c.Label}" title="Is '{!w.field.Name}' custom field?">
+                        <apex:outputField value="{!w.field.sfcloud1__Is_Custom__c}" />
+                    </apex:column> 
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            <apex:outputLabel value="No fields available for cloning. If you think this is an error please contact your System Administrator." rendered="{!wFields.size==0 && NOT(ISNULL(wFields))}" />
+            <apex:outputtext id="msgError" value="{!errorMessage}" styleClass="error" title="Error" escape="false" />           
+        </apex:outputPanel>     
+    </apex:form>   
+    
+    <br/><hr />
+    We are listening. Please <a title='support@gocloudz.com' href='mailto:support@gocloudz.com'><span class="helpLink">Email</span></a> us if you need any help customizing the app or need technical support. 
+
+
+
+    <script type='text/javascript'>                
+        
+        function copyDefaultValues(type){
+        
+            var formValid=true;  
+                    
+            try{
+                $('.tblFields tr').each(function() {
+                    //console.log(this);
+                    
+                    var defaultValue_text = $(this).find('.defaultValue_text');
+                    var defaultValue_field = $(this).find('.defaultValue_field');
+                    var type = $(this).find('.type');
+                    var hide = $(this).find('.hide');
+                    
+                    //1. Copy value from inputField to inputText
+                    if(defaultValue_field!=undefined){
+                                            
+                        //Checkbox
+                        if($(defaultValue_field).is(':checkbox'))
+                            defaultValue_text.val(defaultValue_field.prop('checked'));
+                        else
+                            defaultValue_text.val(defaultValue_field.val());
+                	}
+                	
+                	//2. Required fields cannot be hidden             
+                    if(type!=undefined && type.val()!=undefined && type.val().indexOf('Required')>=0){
+                    	
+                    	if(hide.is(':checked')){
+                    		console.log('Required fields cannot be hidden');
+                    		
+                            //Only add error message if not added
+                            if(hide.next(".errorMsg").length == 0)
+                                hide.after("<div class='errorMsg'><strong>Error:</strong> Required fields cannot be hidden</div>"); 
+                                
+                            formValid = false;                               
+                    	}                     	
+                    }
+                	
+                });
+                
+                if(formValid){                
+	                console.log('save form');
+	                $("input:button.save").prop('value', 'loading..');
+	                $("input:button.quickSave").prop('value', 'loading..');
+	                type=="save" ? save() : quickSave();
+                }
+                	
+            }
+            catch(err) {
+                console.log('copyDefaultValues() exception: ' + err.message);
+            } 
+        }        
+            
+        function noEnter(e)  { 
+            if (window.event && window.event.keyCode == 13 || e.which == 13) {
+                getProducts();
+                return false;
+            } else {
+                return true;
+            } 
+        }
+        
+        function getFields(e){
+            //alert(e);
+            if (e){
+                alert('get fields');
+                getFields();
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
+        function selectAll (field){
+        
+            try{    
+                var isChecked;
+                $('.selectAllInfo').remove();
+                
+                //Get select all 
+                $("[id^='" +field+ "']").each(function(i){
+                    //Get select all check box
+                    if(this.id.indexOf("selectAll") > 0){  
+                        isChecked = this.checked;
+                        
+                        //Show info message if user selected all fields
+                        if(isChecked)
+                            $('.pbHeader').after('<div class="selectAllInfo error1"><b>Note</b>: You only need to select fields that user will change while cloning, rest all of the data will be copied as-is.</div>'); 
+                                            
+                        return;
+                    }   
+                });         
+                
+                //Iterate each row and select/un-select the chechbox
+                $("[id^='" +field+ "']").each(function(i){
+                    if(this.id.indexOf("select") > 0)
+                        $(document.getElementById(this.id)).prop('checked', isChecked);
+                });
+            }
+            catch(err) {
+                console.log('selectAll() exception: ' + err.message);
+            }
+        }  
+    </script>
+    
+</apex:page>
+
+
+                <!-- 
+                <apex:commandButton action="{!Save}" value="Save" reRender="pnlMsg" title="Save" alt="Save" status="loading0" onclick="copyDefaultValues();" />
+                <apex:commandButton action="{!Save}" value="Quick Save" reRender="pnlMsg, pnlFields" title="Quick Save" alt="Quick Save" status="loading0" onclick="copyDefaultValues();" oncomplete="window.onload();" >                     
+                    <apex:param name="quickSave" value="true"/>
+                </apex:commandButton> 
+                <b><apex:actionStatus id="loading0" startText="loading..." /></b>
+                -->
+
+
+                <!-- <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Default_Value__c.Label}" title="Default value for '{!w.field.Name}', make sure datatype matches.">
+                    <apex:inputText value="{!w.field.sfcloud1__Default_Value__c}" disabled="{!OR(w.field.Type__c=='Unique*', w.field.Type__c=='Read Only*')}" /> 
+                </apex:column> -->
+                    
+                <!-- <apex:inputCheckbox value="{!selectAll}">                        
+                    <apex:actionSupport event="onclick" action="{!selectAll}" reRender="pnlFields" status="loading2" />
+                </apex:inputCheckbox>   -->
+
+                <!-- 
+                <apex:inputCheckbox value="{!w.selected}" rendered="{!w.removed}" disabled="{!If(w.field.Type__c='Unique*',true,false)}" />
+                <apex:commandLink value="Remove" rendered="{!NOT(OR(w.removed, w.field.Type__c=='Unique*'))}" action="{!removeField}" reRender="pnlFields" status="loading1" immediate="true">
+                    <apex:param name="deleteField" value="{!w.field.Id}"/>
+                </apex:commandLink><br/>
+                 -->
+                         
+                <!-- Link to actual standard field for standard object 
+                <apex:outputLink value="/p/setup/field/StandardFieldAttributes/d?id={!w.field.sfcloud1__API_Name__c}&type={!$CurrentPage.parameters.childAPIName}">{!w.field.Name}</apex:outputLink> -->
+                        
+				<!-- <apex:column headerValue="{!$ObjectType.sfcloud1__iClone_Fields__c.Fields.sfcloud1__Type__c.Label}" title="Is '{!w.field.Name}' required or read only while cloning?">
+                        <apex:inputField id="type" value="{!w.field.sfcloud1__Type__c}" styleClass="type"/>
+                        <script>
+                            if('{!JSINHTMLENCODE(w.field.Type__c)}'.indexOf('*') !== -1)
+                                document.getElementById('{!JSINHTMLENCODE($Component.type)}').disabled = true; 
+                        </script>
+                    </apex:column> -->

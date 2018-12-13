@@ -1,0 +1,3 @@
+<apex:page standardController="Task">
+    <c:POC_BulkTaskClosure SObjectName="Task" InputFieldsetName="devTest123__POC_TaskBulkClosure" OutputFieldsetName="devTest123__POC_TaskClosureResultFieldset"></c:POC_BulkTaskClosure>
+</apex:page>

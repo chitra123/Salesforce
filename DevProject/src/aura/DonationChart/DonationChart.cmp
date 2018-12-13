@@ -1,0 +1,7 @@
+<aura:component >
+	
+    <div class = "slds-box">
+        Test
+    </div>
+    
+</aura:component>

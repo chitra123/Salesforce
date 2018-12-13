@@ -1,0 +1,22 @@
+<apex:component >
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'styles/jquery-ui.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'frmwks/bootstrap331/css/bootstrap.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'fonts/font-awesome/css/font-awesome.min.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'styles/custom.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'styles/custom2.css')}" />
+    <!--<link rel="stylesheet" href="{!URLFOR($Resource.AngularIpCSS)}" />-->
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'styles/timepicker.less.css')}" />
+    <link rel="stylesheet" href="{!URLFOR($Resource.AngularResource, 'styles/bootstrap-datetimepicker.min.css')}" />
+
+    <script src="{!URLFOR($Resource.AngularResource, 'frmwks/angular134/angular.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'frmwks/angular134/dirPagination.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'frmwks/angular134/angular-sanitize.min.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'scripts/jquery-2.1.1.min.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'scripts/jquery-ui.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'scripts/bootstrap.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'scripts/s_code.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'scripts/custom.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'scripts/bootstrap-timepicker.js')}"></script>
+    <script src="{!URLFOR($Resource.AngularResource, 'bootstrap-datetimepicker.min.js')}"></script>
+</apex:component>

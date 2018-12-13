@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPageWebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <availability>online</availability>
+    <description>iClone Documentation</description>
+    <displayType>link</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>iClone Documentation</masterLabel>
+    <openType>sidebar</openType>
+    <page>iClone_Documentation</page>
+    <protected>false</protected>
+</CustomPageWebLink>

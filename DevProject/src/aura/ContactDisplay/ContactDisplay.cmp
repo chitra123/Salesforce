@@ -1,0 +1,63 @@
+<aura:component controller="contactController" access="global">
+    <ltng:require styles="/resource/SLDS"/>
+    <aura:attribute name="contactList" type="Contact[]"/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+    <thead>
+      <tr class="slds-text-heading--label">
+        <th class="slds-cell-shrink">
+          <label class="slds-checkbox">
+            <input type="checkbox" name="options" />
+            <span class="slds-checkbox--faux"></span>
+            <span class="slds-assistive-text">Select All</span>
+          </label>
+        </th>
+        <th class="slds-is-sortable" scope="col">
+          <div class="slds-truncate">Name
+            <button class="slds-button slds-button--icon-bare">
+              <span class="slds-assistive-text">Sort</span>
+            </button>
+          </div>
+        </th>
+        <th class="slds-is-sortable" scope="col">
+          <div class="slds-truncate">Account Name
+            <button class="slds-button slds-button--icon-bare">
+              <span class="slds-assistive-text">Sort</span>
+            </button>
+          </div>
+        </th>
+        <th class="slds-is-sortable" scope="col">
+          <div class="slds-truncate">Phone
+            <button class="slds-button slds-button--icon-bare">
+              <span class="slds-assistive-text">Sort</span>
+            </button>
+          </div>
+        </th> 
+        <th class="slds-cell-shrink"></th>
+      </tr>
+    </thead>
+        
+    <tbody>
+      <tr class="slds-hint-parent">
+        <td class="slds-cell-shrink" data-label="Select Row">
+          <label class="slds-checkbox">
+            <input type="checkbox" name="options" />
+            <span class="slds-checkbox--faux"></span>
+            <span class="slds-assistive-text">Select Row</span>
+          </label>
+        </td>
+          
+          <aura:iteration var="contact" items="{!v.contactList}">
+              <th class="slds-truncate" scope="row" data-label="Name">{!contact.Name}</th>
+              <td class="slds-truncate" data-label="Account Name">{!contact.Account.Name}</td>
+              <td class="slds-truncate" data-label="Phone">{!contact.Phone}</td>
+              <td class="slds-cell-shrink" data-label="Actions">
+                  <button class="slds-button slds-button--icon-border-filled slds-button--icon-x-small">
+                      <span class="slds-assistive-text">Show More</span>
+                  </button>
+              </td>
+          </aura:iteration>
+      </tr> 
+    </tbody>
+  </table>
+</aura:component>

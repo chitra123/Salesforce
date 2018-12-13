@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <webLinks>
+        <fullName>iClone</fullName>
+        <availability>online</availability>
+        <description>Clone individual records</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>iClone</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)}
+
+window.location = &apos;/apex/sfcloud1__iClone?records={!Contact.Id}&apos;;</url>
+    </webLinks>
+</CustomObject>

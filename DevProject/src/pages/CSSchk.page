@@ -1,0 +1,45 @@
+<apex:page standardstylesheets="false">
+<html>
+<head>
+    <title>jQuery UI Tabs</title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"></link>
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script> 
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js">
+        </script>
+        <link rel="stylesheet" href="/resources/demos/style.css"></link>
+        <script> 
+            $(function() {
+                $( "#tabs" ).tabs();
+                  });
+        </script>
+</head>
+    <body style="background-color:#CCEEFF">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1" style="background-color:#9AFE2E">Personal Details</a></li>
+                <li><a href="#tabs-2" style="background-color:#9AFE2E">Educational Details</a></li>
+                <li><a href="#tabs-3" style="background-color:#9AFE2E">Work Details</a></li>
+            </ul> 
+        <div id="tabs-1">
+            <apex:form >
+                <apex:pageBlock >
+                    <apex:pageBlockSection >
+                        <apex:inputText >Name:
+                        </apex:inputText>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>                    
+            </apex:form>
+        </div>
+        <div id="tabs-2">    
+            <p> purus.
+            </p>  
+        </div>
+        <div id="tabs-3">    
+            <p>
+                fdghnjr 
+            </p>  
+        </div>
+        </div>
+    </body>
+</html> 
+</apex:page>

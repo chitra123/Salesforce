@@ -1,0 +1,135 @@
+<apex:page controller="FullCalendar_Controller" action="{!pageLoad}" applyHtmlTag="true" showHeader="true">
+	
+	<apex:includeScript value="{!URLFOR($Resource.FullCalendar, 'jquery.min.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.FullCalendar, 'jquery-ui.min.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.FullCalendar, 'fullCalendarMoment.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.FullCalendar, 'fullcalendar.min.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.FullCalendar, 'scheduler.min.js')}"  />
+	
+	<apex:stylesheet value="{!URLFOR($Resource.FullCalendar, 'fullCalendarCSS.css')}"/>
+	<apex:stylesheet value="{!URLFOR($Resource.FullCalendar, 'fullCalendarPrintCSS.css')}"/>
+	<apex:stylesheet value="{!URLFOR($Resource.FullCalendar, 'scheduler.min.css')}"/>
+	<!-- 
+    <link href="{!$Resource.fullCalendarCSS}" rel="stylesheet" />
+    <link href="{!$Resource.fullCalendarPrintCSS}" rel="stylesheet" media="print" />
+    <link href="{!$Resource.SchedulerFullCAlendarCss}" rel="stylesheet" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="{!$Resource.fullCalendarMoment}"></script>
+    <script src="{!$Resource.fullCalendarMinJS}"></script>
+    <script src="{!$Resource.SchedulerFullCAlendarJs}"></script> -->
+    
+    <script>
+        
+        j$ = jQuery.noConflict();
+        
+        //We need to wrap everything in a doc.ready function so that the code fires after the DOM is loaded
+        j$(document).ready(function() {  
+            createCalendar();
+        });
+        
+        function createCalendar(){
+        
+            //Call the fullCallendar method. You can replace the '#calendar' with the ID of the dom element where you want the calendar to go. 
+
+            j$('#calendar').fullCalendar({
+				schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+                header: {
+
+                    left: 'prev,next today',
+                    center: 'title',
+                    right:'timelineDay,timelineWeek,timelineMonth'
+                },
+
+                editable: false,
+                
+                defaultView: 'timelineDay',
+                //To create a custom a timeline view
+				views: {
+					timelineThreeDays: {
+						type: 'timeline',
+						duration: { days: 3 }
+					}
+				},
+				resourceGroupField: 'building',
+				resources: [
+					
+					//At run time, this APEX Repeat will reneder the array elements for the events array
+                    <apex:repeat value="{!groupList}" var="group">
+
+                        {
+                            id: "{!group.Id}", 
+                            building: "{!group.groupName}", 
+                            title: "{!group.groupMemberName}",
+                            eventColor: "{!group.eventColor}" 
+                        },
+
+                    </apex:repeat>
+				],
+				
+                events:
+
+                [
+                    //At run time, this APEX Repeat will rerender the array elements for the events array
+                    <apex:repeat value="{!events}" var="e">
+
+                        {
+                            title: "{!e.title}",
+
+                            start: '{!e.startString}',
+
+                            end: '{!e.endString}',
+
+                            url: '{!e.url}',
+
+                            allDay: {!e.allDay},
+
+                            className: '{!e.className}',
+                            
+                            advisor: '{!e.advisor}',
+                            
+                            resourceId : '{!e.resourceId}'
+                        },
+
+                    </apex:repeat>
+                ],
+                
+                eventMouseover: function(calEvent, domEvent) {
+                }               
+            });
+        }    
+
+    </script>
+
+    <!--some styling. Modify this to fit your needs-->
+
+    <style>
+
+
+    </style>
+    
+    <apex:sectionHeader title="Calendar"/>
+    <!-- <apex:outputPanel id="calPanel"> -->
+        <apex:form >
+            <apex:pageBlock >
+                <apex:pageBlockSection columns="3">
+                    <apex:selectList value="{!Groups}" multiselect="False" size="1" label="Available Groups" id="selectList" >
+                        <apex:selectOptions value="{!items}"/>
+                    </apex:selectList><p/>
+                    <apex:commandButton value="Check Availability" action="{!usersOfGroup}" />
+                </apex:pageBlockSection>      
+            </apex:pageBlock>
+            <!--  <div id="cal-options">
+                <apex:commandButton value="{!IF(includeMyEvents,'Hide My Events','Show My Events')}" action="{!toggleMyEvents}"/>
+            </div>
+            <div id="cal-legend">
+                <ul>
+                    <li style="{!IF(includeMyEvents,'','display:none')}"><span class="event-personal"></span>Scheduled Events</li>
+                </ul>
+                <div style="clear:both;"></div>
+            </div>
+            <div style="clear:both;"></div>-->
+            <div id="calendar"></div> 
+        </apex:form>
+   <!--  </apex:outputPanel> -->
+</apex:page>

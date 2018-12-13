@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Event Template">
+	<aura:attribute name="setRating" type="String"/>
+    <aura:attribute name="triggerID" type="String"/>
+</aura:event>

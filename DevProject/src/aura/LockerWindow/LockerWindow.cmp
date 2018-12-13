@@ -1,0 +1,3 @@
+<aura:component >
+    <button onclick="{!c.showFromWindow}">Show from Locker Component</button>
+</aura:component>

@@ -1,0 +1,9 @@
+<apex:page controller="InputPageControllerRest">
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockSection >
+				<apex:commandButton value="get Records" action="{!getRecords}"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

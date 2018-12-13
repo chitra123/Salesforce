@@ -1,0 +1,12 @@
+<apex:page controller="sendEmail1">
+<apex:pageBlock >
+ <apex:pageBlockSection id="ab">
+ <apex:pageMessage summary="Email has been sent successfully" rendered="{!flag}" id="abc" severity="info"></apex:pageMessage>
+  <apex:form >  
+  To <apex:inputText id="A" value="{!to}"/>
+  From <apex:inputText id="B" value="{!fr}"/>
+  <apex:commandButton value="Submit Email" action="{!sendEmailTo}" reRender="abc,ab"/>
+  </apex:form>
+ </apex:pageBlockSection>
+</apex:pageBlock>
+</apex:page>

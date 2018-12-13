@@ -1,0 +1,213 @@
+<apex:page standardController="Task" extensions="DataGridController" docType="html-5.0" standardStylesheets="true">
+   
+    <apex:includeScript value="{!$Resource.jquerymin}"  />
+    <apex:includeScript value="{!$Resource.DatatableJS}"/>
+    <apex:stylesheet value="/Resource/DatatableCSS.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/bs-3.3.5/dt-1.10.10/datatables.min.css"/>-->
+    <script type="text/JavaScript">        
+        
+    	var table;
+    	var jsonStr = {};
+    
+        $(document).ready(function() {
+            $('[id$="panelId"]').hide();
+            $('[id$="hiddenText"]').hide();
+        } );
+        
+        function showDataInDataTable(){
+            table = $('#myTable').DataTable();
+            var fieldList = [];
+            var inputFieldVal = {};
+            var input = '[id$="inputFields"]';
+            var inputFields = '[id$="hiddenText"]';
+
+            $(inputFields).each(function(index,val){
+                fieldList.push(val.innerHTML);
+            });
+
+            $(input).each(function(index,val){
+                inputFieldVal[fieldList[index]] = val.value;
+            });
+            
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DataGridController.queryList}', JSON.stringify(inputFieldVal), handleContacts);
+        }        
+        
+        function handleContacts(result, event) {
+            if(event.type == 'exception'){
+                alert(event.message);
+            } else{
+                search(result,'');
+                jsonStr = result;
+            }
+        }
+        
+        function search(jsonString, jsonUpdated) {
+            
+            table.clear();
+            var outputFields = [];
+            //console.log($('[id$="outputFieldsText"]'));
+            var output = '[id$="outputFieldsText"]';
+            
+            $.each(jsonString, function(index, element) {
+                
+                outputFields = [ "<input id='chkbox' type='checkbox' value='" + element.Id + "'/>"];
+                $(output).each(function(index,val){
+                    var array = val.innerHTML.split(":");
+                    if(array[1] == "date"){
+                        //var dateStr = getStringFromDate(element[array[0]]);  
+                        var date = new Date(element[array[0]]);
+                        var str ;
+                        if(element[array[0]] != null && element[array[0]] != ''){
+                            str = date.getDate() + "/" + (date.getMonth() +1) + "/" + date.getFullYear();
+                        }
+                        outputFields.push(str);
+                    }
+                    else{
+                        outputFields.push(element[array[0]]);
+                    }
+                }); 
+                
+                if(jsonUpdated != '' && element.Id in jsonUpdated){
+                    var taskupdated = jsonUpdated[element.Id];
+                    var index = outputFields.indexOf(element.Status);
+                    outputFields[index] = taskupdated.Status;
+                    outputFields[0] =  "<input id='chkbox' type='checkbox' value='" + element.Id + "' disabled />";
+                    //table.row.add([ "<input id='chkbox' type='checkbox' value='" + element.Id + "' disabled />", element['OwnerId'], element.Subject,taskupdated.Status, str]); 
+                	table.row.add(outputFields);
+                }
+                else{
+                    table.row.add(outputFields);
+                    //table.row.add([ "<input id='chkbox' type='checkbox' value='" + element.Id + "' />", element['OwnerId'], element.Subject,element.Status, str]); 
+                }
+            });
+            
+            $(output).each(function(index,val){
+                outputFields.push({aTargets: [index], sTitle: val.innerHTML});
+            });
+			table.draw();
+            $('[id$="myTable_filter"]').hide();
+            $('[id$="panelId"]').show();
+     	}
+    /*
+        function getStringFromDate(dateInput){
+            var date = new Date(dateInput);
+            var str ;
+            if(dateInput != null && dateInput != ''){
+                str = date.getDate() + "/" + (date.getMonth() +1) + "/" + date.getFullYear();
+            }
+            return str;
+        }*/
+    
+        // Handle click on "Select all" control
+        function checkAll(){  
+            if( $("[id$='select_all_checkbox']").prop( "checked" )){
+                $('.checkbox').attr('checked', true);
+            }else{
+                $('.checkbox').attr('checked', false);
+            }
+        }     
+        
+        function submitClose(){
+            
+            var taskToUpdateList = [];
+            $('input[type=checkbox]:checked').each(function(){ 
+                taskToUpdateList.push($(this).val());
+            });
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DataGridController.processSelected}', JSON.stringify(taskToUpdateList), function(result,event){
+                if(event.type == 'exception'){
+                    alert(event.message);
+                } else{
+                    $('[id$="panelId"]').hide();
+                    search(jsonStr,result);
+                }
+            });
+        }
+
+    </script>
+    <style>
+
+        #myTable td, #myTable th {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+        #myTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        #myTable th{
+        	background-color: lightgrey;
+        }
+        #myTable tbody {
+            background-color:#ffffff;
+        }
+        #myTable tr:hover{background-color:#f5f5f5}
+        
+        #myTable_paginate{
+        	text-align: center;
+        }
+        
+        #myTable_paginate a{
+        	padding: 5px;
+        }
+        a.disabled {
+            pointer-events: none;
+            cursor: default;
+        }
+       
+    </style>
+
+    
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:repeat value="{!$ObjectType['Task'].FieldSets['POC_TaskBulkClosure']}" var="fieldValue">
+                    <apex:Inputfield value="{!tsk[fieldValue]}" id="inputFields"/>
+                </apex:repeat>
+                <apex:outputPanel id="tt">
+                    <apex:repeat value="{!$ObjectType['Task'].FieldSets['POC_TaskBulkClosure']}" var="fieldValue">
+                    <apex:outputText value="{!fieldValue}" id="hiddenText"/>
+                </apex:repeat>
+                </apex:outputPanel>
+                <apex:panelGroup >
+                    <apex:commandButton value="Search" onclick="showDataInDataTable();" rerender="frm" status="Inprogress" id="button"></apex:commandButton> 
+                    <apex:actionstatus id="Inprogress">
+                        <apex:facet name="start" >
+                            <apex:image value="{!$Resource.loadingImg}" height="30" width="30"/>
+                        </apex:facet>
+                    </apex:actionstatus>
+                </apex:panelGroup>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:outputPanel id="panelId">
+            <apex:pageBlock >
+                <apex:pageBlockButtons location="top">
+                    <apex:panelGroup >
+                        <apex:commandButton value="Close The Selected Tasks" onclick="submitClose();return false;"  status="sorting" id="closeButton"/>
+                        <apex:actionstatus id="sorting">
+                            <apex:facet name="start" >
+                                <apex:image value="{!$Resource.loadingImg}" height="30" width="30"/>
+                            </apex:facet>
+                        </apex:actionstatus>
+                    </apex:panelGroup>
+                </apex:pageBlockButtons>
+                
+                <table id="myTable" class = "dataTable" >
+                    <thead >
+                        <th>
+                            <apex:inputCheckbox value="{!selectAll}" id="select_all_checkbox" onclick="checkAll();"/>
+                        </th>
+                        <apex:repeat value="{!$ObjectType['Task'].FieldSets['POC_TaskClosureResultFieldset']}" var="fieldValue" >
+                            <th >
+                                <apex:outputLabel value="{!fieldValue.Label}" id="outputFields"/>
+                                <apex:outputText value="{!fieldValue + ':' + fieldValue.Type}" id="outputFieldsText" style="display:none"/>
+                            </th>
+                        </apex:repeat>
+                    </thead>
+                </table>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

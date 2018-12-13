@@ -1,0 +1,19 @@
+<apex:page standardcontroller="Teacher__c" extensions="GenerateTimeTableController">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Teacher">
+                <apex:outputField value="{!Teacher__c.Name}" label="Teacher Name: "></apex:outputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="classes" id="cc">
+                <apex:pageBlockTable var="c" value="{!classes}" columns="2">
+                    <apex:column value="{!c}" headerValue="Class"/>
+                    <apex:column >
+                    <apex:commandLink value="Generate" action="{!generate}">
+                        <apex:param value="{!c}" Name="className" assignTo="{!className}" />
+                   </apex:commandLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

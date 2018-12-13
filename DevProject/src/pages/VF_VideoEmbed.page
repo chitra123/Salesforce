@@ -1,0 +1,14 @@
+<apex:page >
+<object id="MediaPlayer1" width="180" height="200" classid="CLSID:22D6F312-B0F6-11D0-94AB-0080C74C7E95" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701" standby="Media Player components..." type="application/x-oleobject" align="middle">
+<apex:param name="FileName" value="https://www.youtube.com/watch?v=KJboB6H7Ado"/>
+<apex:param name="ShowStatusBar" value="True"/>
+<apex:param name="DefaultFrame" value="mainFrame"/>
+<apex:param name="autostart" value="false"/>
+ 
+<embed type="application/x-mplayer2" pluginspage = "http://www.microsoft.com/Windows/MediaPlayer/" src="https://www.youtube.com/watch?v=KJboB6H7Ado" autostart="false" align="middle" width="200" height="150" defaultframe="rightFrame" showstatusbar="true">
+</embed>
+</object>
+<a href="https://www.youtube.com/watch?v=KJboB6H7Ado"><font size="2">Click here for Player</font></a>
+<a href="http://www.microsoft.com/windows/windowsmedia/mp10/default.aspx">
+<font size="1">Download Media Player Here</font></a>
+</apex:page>

@@ -1,0 +1,28 @@
+<aura:component controller="LookupSearch_Controller">
+    
+    <ltng:require scripts="{!$Resource.jquerymin}"/> 
+    <ltng:require scripts="{!$Resource.jQueryUI}"/>
+    <aura:attribute name="objectName" type="String" default="" required="true"/>
+    <aura:attribute name="fieldName" type="String" default="" required="true"/>
+    <aura:attribute name="minLen" type="Integer" default="3"/>
+    <aura:attribute name="searchStr" type="String" default=""/>
+    <aura:attribute name="limitSize" type="Integer" default="20"/>
+    <aura:attribute name="inputLabel" type="String" default="Find" description="Label for text input"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <div class="slds-form-element lightningInput"  data-aura-class="lightningInput">
+        <label class="slds-form-element__label" for="inputTxt">
+            {!v.inputLabel}
+        </label>
+        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--left-right">
+            <input onkeypress="{!c.autocomplete}" 
+                   class="slds-input searchInp slds-lookup__search-input" id="lookup2" type="text"
+                   aria-autocomplete="list" role="combobox"
+                   aria-expanded="false" aria-activedescendant=""
+                   placeholder="Search" value="{!v.searchStr}" />
+            <lightning:icon iconName="utility:search" size="small" alternativeText="search" class="searchIcon" aura:id="icon"/>
+        </div>
+    </div>
+    
+</aura:component>

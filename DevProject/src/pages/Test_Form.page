@@ -1,0 +1,39 @@
+<apex:page standardStylesheets="false" showHeader="false" docType="html-5.0" applyBodyTag="false">
+    <head>
+        <c:AngularResource ></c:AngularResource>
+        <h3>Form Input</h3>
+        <script type = 'text/javascript'>
+        angular.module('myApp',[])
+        .controller('myTestCltrl', function($scope){
+            $scope.firstName = '';
+            $scope.lastName = '';
+            $scope.email = '';
+            
+        });
+        </script>
+    </head>
+    <body>
+        <form class = "form-horizontal">
+            <div ng-app = "myApp" ng-controller = "myTestCltrl">
+                <div class="form-group">
+                    <label for = "firstName" class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-5">
+                        <input type = "text" ng-model = "firstName" placeholder = "FirstName" id = "firstName" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for = "lastName" class="col-sm-2 control-label">Last Name</label>
+                    <div class="col-sm-5">
+                        <input type = "text" ng-model = "lastName" placeholder = "Last Name" id = "lastName" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for = "Email" class="col-sm-2 control-label">Email</label>
+                    <div class="col-sm-5">
+                        <input type = "email" ng-model = "email" placeholder = "Enter your email" id = "email" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </body>
+</apex:page>

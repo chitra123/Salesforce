@@ -1,0 +1,14 @@
+<aura:event type="APPLICATION" description="Event template">
+	<aura:attribute name="childCampaignIdSelected" type="String"/>
+    <aura:attribute name="isEmailEditorRequired" type="Boolean"/>
+    <aura:attribute name="isFileUploadReq" type="Boolean"/>
+    <aura:attribute name="sendButtonEnabled" type="Boolean" />
+    <aura:attribute name="conIdforEmailTemplate" type="String"/>
+    <aura:attribute name="langforEmailTemplate" type="String"/>
+    <aura:attribute name="optyIdSelected" type="String"/>  
+    <aura:attribute name="offerDate" type="String"/>
+    <aura:attribute name="offerMonth" type="String"/>
+    <aura:attribute name="offerYear" type="String"/>
+    <aura:attribute name="fullMonth" type="String"/>
+    <aura:attribute name="reloadTinyMCE" type="Boolean"/>    
+</aura:event>

@@ -1,0 +1,32 @@
+<apex:page standardcontroller="Teacher__c" extensions="TeacherInputController">
+	<apex:form >
+		<apex:pageBlock >
+		<apex:pageMessages ></apex:pageMessages>
+			<apex:pageBlockSection title="Personal Information">
+				<apex:inputField value="{!Teacher__c.Name}" required="true"></apex:inputField>
+				<apex:inputField value="{!Teacher__c.DOB__c}"/>
+				<apex:inputField value="{!Teacher__c.Email__c}" required="true"/>
+				<apex:inputField value="{!Teacher__c.Phone__c}" required="true"/>
+				<apex:inputField value="{!Teacher__c.Address__c}"/>
+			</apex:pageBlockSection>
+			
+			<apex:outputPanel id="panel"  rendered="{!flag}">
+				<apex:pageBlockSection title="Subject class">
+					<apex:outputText value="{!SubjectRecord}" label="Subject: "/>
+					<apex:outputText value="{!ClassName}" label="Class: "/>
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+			
+			<apex:pageblockbuttons >
+				<apex:commandButton value="Save" action="{!Save}"/>
+			</apex:pageblockbuttons>  
+				
+			
+		</apex:pageBlock>
+		<!-- apex:pageBlock rendered="{!flag}">
+			<apex:facet name="footer">
+				<center><a href="">1</a><a>2</a><a>Next</a></center>
+			</apex:facet>
+		</apex:pageBlock> -->
+	</apex:form>
+</apex:page>

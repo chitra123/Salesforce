@@ -1,0 +1,33 @@
+<apex:page standardController="Account">
+    <apex:includeLightning /> 
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <apex:includeScript value="/support/console/35.0/integration.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.4.2.min.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.6.custom.min.js')}"  />
+    <apex:includeScript value="/support/console/22.0/integration.js"/>
+    <div id="lightning" />
+     <script>
+    	
+    	//Tell your Visualforce page to use ExposeVF Lightning app
+        $Lightning.use("devTest123:Header", function() {
+            // Write a function that creates the component on the page
+          $Lightning.createComponent("devTest123:CustomerHeader",
+          {"accountId":'{!Account}'},
+          "lightning",
+          function(cmp) {
+            // do some stuff
+          });
+        });
+    j$ = jQuery.noConflict();	
+    j$("#click").click(function(){
+    	alert('sss');
+    });
+    
+    function clickfvv(){
+    	alert('in vf'); 
+        sforce.console.openPrimaryTab(undefined, '/' + '0019000000Ujllr', true, 'Account');
+    }
+    	
+    </script>
+</apex:page>

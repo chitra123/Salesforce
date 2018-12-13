@@ -1,0 +1,44 @@
+<aura:component controller="LookupSearch_Controller">
+    
+    <ltng:require scripts="{!$Resource.jquerymin}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    
+    <aura:attribute name="objectName" type="String" default="" required="true"/>
+    <aura:attribute name="fieldName" type="String" default="" required="true" description="fieldNames seperated by semicolon"/>
+    <aura:attribute name="minLen" type="Integer" default="3"/>
+    <aura:attribute name="searchStr" type="String" default=""/>
+    <aura:attribute name="limitSize" type="Integer" default="20"/>
+    <aura:attribute name="inputLabel" type="String" default="Find" description="Label for text input"/>
+    <aura:attribute name="message" type="String" default="Search Results.."/>
+    <aura:attribute name="resultList" type="List" />
+    <aura:attribute name="checkStr" type="String"/>
+    <aura:attribute name="icon" type="String" description="Specify in the format '\utility:down\' where 'utility' is the category,
+                                                                 and 'down' is the specific icon to be displayed."/>
+    
+    
+    <aura:registerEvent name="setValue" type="c:ParameterEvent"/>
+    <div class="slds-form-element slds-lookup" data-select="single">
+        <div class="slds-form-element__control"> 
+            <lightning:input type="search" label="{!v.inputLabel}" name="search" onchange="{!c.getResults}" value="{!v.searchStr}" class="inputSearch" aura:id="input"/>
+        </div>
+        
+        <div class="slds-lookup__menu" id="lookup" aura:id = "searchMenu">
+            <div class="slds-lookup__item--label slds-text-body--small" style = "font-weight: bold;">
+                {!v.message}<lightning:spinner aura:id="spinner" size="small" alternativeText="loading.."/>
+            </div>
+            <ul class="slds-lookup__list" role="listbox">
+                <aura:iteration items="{!v.resultList}" var="item">
+                    <li role="presentation">
+                        <span class="slds-lookup__item-action slds-media svgMargin" id="lookup-option" role="option">
+                            <lightning:icon iconName="{!v.icon}" size="x-small" class="slds-media__figure"/>
+                            <div class="slds-media__body" onclick = "{!c.getSelected}" data-selected = "{!item.Name}" data-id = "{!item.Id}">
+                                <div class="slds-lookup__result-text">{!item.Name}</div>
+                                <span class="slds-lookup__result-meta slds-text-body--small">{!item.Name}</span>
+                            </div>
+                        </span>
+                    </li>
+                </aura:iteration>
+            </ul>
+        </div>
+    </div>
+    
+</aura:component>

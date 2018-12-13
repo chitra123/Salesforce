@@ -1,0 +1,27 @@
+.THIS .slds-icon_container>span{
+    cursor: pointer;
+}
+.THIS.slds-form ul{
+    background-color: #fff;
+    border: 1px solid #d8dde6;
+    border-radius: 3px;
+    position: absolute;
+    width: 100%;
+    z-index:100;
+}
+.THIS li{
+    padding: 5px 12px;
+}
+.THIS li:not(:last-child){
+    border-bottom: 1px solid #d8dde6;
+}
+.THIS li:hover, .THIS #showMore{
+    background-color: #f7f9fb;
+}
+.THIS .slds-icon-utility-close .slds-icon{
+    fill: #fff;
+}
+.THIS .modalLookup{
+    padding: 5px;
+    background-color: #d8dde6;
+}

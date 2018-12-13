@@ -1,0 +1,14 @@
+<apex:page >
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"/>
+    <script src ="{!$Resource.Directive}"/>
+    <script>
+        angular.module( "Test", ['ngAutocomplete']).controller("TestCtrl",function ($scope) {
+            $scope.result1 = '';
+            $scope.options1 = null;
+            $scope.details1 = '';
+        });
+    </script>
+    <div ng-app = "Test" ng-controller = "TestCtrl">
+        
+    </div>
+</apex:page>

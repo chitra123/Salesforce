@@ -1,0 +1,465 @@
+<apex:page action="{!initPage}" controller="sfcloud1.iClone" title="iClone :: {!parentObjLabel}" tabStyle="sfcloud1__iClone__c" docType="html-5.0"> 
+
+    <head>               
+    
+        <script src="https://code.jquery.com/jquery-1.10.1.min.js" ></script>
+        
+        <script type='text/javascript'>
+        
+        	//Fix for IE9 and other browsers where console is not defined until developer mode is on. 
+            //For more info: http://stackoverflow.com/questions/5472938/does-ie9-support-console-log-and-is-it-a-real-function            
+            //Create a dummy function for console.log when the debugger is not active
+            if (!window.console) window.console = {};
+            if (!window.console.log) window.console.log = function () { };
+            
+        
+            //Disable read only fields and load default field values
+            window.onload = function(){                
+                
+                try{
+                    //Disable read-only fields
+                    $("input.readOnly")
+                        .attr({readonly: true, title: 'Insufficient Privileges'})
+                        .addClass("input-disabled");
+                    $("textarea.readOnly")
+                        .attr({readonly: true, title: 'Insufficient Privileges'})
+                        .addClass("input-disabled");               
+                    
+                    //Erase existing values
+                    $('[data-erase]').each(function(i){
+                    
+                        var erase = this.dataset["erase"];
+                        var dataType= this.dataset["datatype"];
+                        
+                        if(erase == 'true'){
+                        	if(dataType == 'BOOLEAN')
+                                $(this).prop('checked', false);
+                            else                                                                
+                                $(this).val(''); 
+                        }
+                    });
+                    
+                    //Load default values
+                    $('[data-defaultvalue]').each(function(i){
+                        
+                        var defaultValue = this.dataset["defaultvalue"];
+                        var dataType= this.dataset["datatype"];
+                        
+                        if(defaultValue.length > 0 ){
+                        	if(dataType == 'BOOLEAN')
+                            	$(this).prop('checked', this.dataset["defaultvalue"]=='true');
+	                       	else                                                                
+                            	$(this).val(this.dataset["defaultvalue"]);
+                                    
+                        	/*
+                            //Erase existing values
+                            if(defaultValue == 'ERASE'){
+                                if(dataType == 'BOOLEAN')
+                                    $(this).prop('checked', false);
+                                else                                                                
+                                    $(this).val(''); 
+                            }
+                            
+                            //Load default values
+                            else{
+                                if(dataType == 'BOOLEAN')
+                                    $(this).prop('checked', this.dataset["defaultvalue"]=='true');
+                                else                                                                
+                                    $(this).val(this.dataset["defaultvalue"]);
+                            }
+                            */
+                        }
+                        
+                    });
+                }
+                catch(err) {
+                    console.log('onLoad() exception: ' + err.message);
+                } 
+                
+            }
+            
+        </script>    
+    
+         
+        <style> 
+            .error { color: red;  font-weight: strong; font-size: 1.3em; }
+            .error1 { color: red; font-weight: strong; font-size: 1.1em; }
+            .bold { color: black; font-size: 1.5em; }
+            .bold1 { font-weight: bold; font-size: 1em; }
+            .input-disabled{background-color:#EBEBE4;}
+        </style>
+    </head>  
+   
+    <apex:pageMessages id="messages" escape="false" />    
+    
+    <apex:outputPanel id="pnlMain">
+        <br />
+        <table style="width: 100%">
+            <tbody>
+                <tr>
+                    <td style="width: 550px" class="error1">
+                        Click <a href="/{!returnURL}" title="Go back to previous page">here</a> to go back to {!parentObjLabel}.                               
+                    </td>
+                    <td style="text-align: right;">
+                        <a href="https://appexchange.salesforce.com/listingDetail?listingId=a0N3000000B39tWEAR&tab=r" target="_blank" class="helpLink" title="Rate this app (New Window)">Rate this app</a> | 
+                        <a href="http://www.gocloudz.com/documentation-PDF/iClone-Usage-Guide.pdf" target="_blank" class="helpLink" title="Help for this Page (New Window)">
+                            {!$ObjectType.iClone__c.Label} Help 
+                        <img src="/s.gif" alt="" class="helpIcon" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <br/>
+        
+        <apex:form id="mainForm">       
+          
+            <!-- These function will be called from JS, once the form is validated -->
+            <apex:actionFunction name="save" action="{!Save}" reRender="pnlMain, msgError" oncomplete="return false;" /> 
+        
+            <apex:outputPanel id="pnlMain">
+            
+                <!-- Parent Object -->
+                <apex:pageBlock id="blkParentdObj" rendered="{!wParentFields.size>0 && NOT(ISNULL(wParentFields))}">
+                
+                    <apex:pageBlockButtons location="top">
+                        <input type="button" class="btn save" value="Save" onclick="validateForm('save');" />
+                        <br />
+                    </apex:pageBlockButtons>
+                     
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td class="pbTitle" style="width:75%">
+                                    <h3>New {!parentObjLabel}</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="list" style="width:100%">        
+                                                 
+                                        <!-- Column Headers -->
+                                        <thead class="rich-table-thead">
+                                            <tr class="headerRow">
+                                                <apex:repeat value="{!parentheaders}" var="header">
+                                                    <th>{!header}</th>
+                                                </apex:repeat>
+                                            </tr> 
+                                        </thead>
+                                        
+                                        <apex:repeat value="{!parentObjs}" var="parentObj"> 
+                                            <tr class="dataRow even  first  last" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} "
+                                                onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+                                                <!-- Checkbox is to facilitate JS validation -->
+                                                <td class="dataCell" colspan="1" style="display:none;">                              
+                                                    <input type="checkbox" class="select" checked="true" />
+                                                </td>
+                                                
+                                                <!-- Fields to display -->
+                                                <apex:repeat value="{!wParentFields}" var="wF">
+                                                    <td class="dataCell" colspan="1" style="display:{!wF.hideField}">  
+                                                                                                      
+                                                        <div class="{!IF(CONTAINS(wF.type, 'Required'), 'requiredInput', '')}">
+                                                            <div class="{!IF(CONTAINS(wF.type, 'Required'), 'requiredBlock', '')}"></div>
+                                                            <apex:inputField id="inputFieldChild" value="{!parentObj[wF.name]}" html-data-defaultvalue="{!wF.defaultValue}" html-data-erase="{!wF.erase}" html-data-datatype="{!wF.dataType}" styleClass="{!IF(CONTAINS(wF.type, 'Read Only'), 'readOnly', '')}" required="false" rendered="{!NOT(AND(CONTAINS(wF.type, 'Read Only'), OR(wF.dataType='REFERENCE', wF.defaultValue='') ))}" />    
+                                                            <!-- Show read-only fields as output fields if they are reference type or no default value provided -->
+                                                            <apex:outputField value="{!parentObj[wF.name]}" html-data-defaultvalue="{!wF.defaultValue}" html-data-erase="{!wF.erase}" html-data-datatype="{!wF.dataType}" rendered="{!AND(CONTAINS(wF.type, 'Read Only'), OR(wF.dataType='REFERENCE', wF.defaultValue='') )}" />
+                                                           
+                                                        </div>
+                                                        
+                                                    </td>
+                                                </apex:repeat>
+                                            </tr>
+                                        </apex:repeat>
+                                    </table>
+                                </td>                       
+                            </tr>
+                        </tbody>
+                    </table> 
+                </apex:pageBlock>                   
+                    
+                <br/><br/>
+                    
+                <!-- Child Objects -->
+                <apex:pageBlock id="blkChildObjs" rendered="{!wObjs.size>0 && NOT(ISNULL(wObjs))}"> 
+                    <apex:pageBlockButtons location="bottom">
+                        <input type="button" class="btn save" value="Save" onclick="validateForm('save');" />
+                    </apex:pageBlockButtons>                        
+                                
+                    <div class="pbTitle">
+                        <h3>Related Lists</h3>
+                    </div>
+                    <apex:repeat value="{!wObjs}" var="wO">             
+                        <apex:pageBlockSection title="{!wO.objLabel} Records. Record Type: {!wO.recordType}" columns="1">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputPanel >
+                                    <table class="list tblFields">
+                                    
+                                        <!-- Column Headers -->                      
+                                        <thead class="rich-table-thead">
+                                            <tr class="headerRow">
+                                                <th width="40px"> 
+                                                    <apex:inputCheckbox id="selectAll" value="{!wO.selectAll}" onchange="selectAll('{!$Component.this}');" immediate="true" />   
+                                                </th>                                           
+                                                <apex:repeat value="{!wO.headers}" var="header">
+                                                    <th>{!header}</th>
+                                                </apex:repeat>      
+                                            </tr>
+                                        </thead> 
+                                         
+                                        <!-- Child Records -->                  
+                                        <apex:repeat value="{!wO.wRecords}" var="wR">
+                                            <tr class="dataRow even  first  last" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);}" 
+                                                onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+                                                <td class="dataCell" colspan="1">                                                
+                                                    <apex:inputCheckbox styleClass="select" value="{!wR.selected}" />
+                                                </td>
+                                                
+                                                <!-- Fields to display -->
+                                                <apex:repeat value="{!wR.wFields}" var="wF">
+                                                    <td class="dataCell" colspan="1" style="display:{!wF.hideField}">  
+                                                        <apex:outputPanel id="childRecord">
+                                                                                                                        
+                                                            <div class="{!IF(CONTAINS(wF.type, 'Required'), 'requiredInput', '')}">
+                                                                <div class="{!IF(CONTAINS(wF.type, 'Required'), 'requiredBlock', '')}"></div>
+                                                                <apex:inputField value="{!wR.sObj[wF.name]}" html-data-defaultvalue="{!wF.defaultValue}" html-data-erase="{!wF.erase}" html-data-datatype="{!wF.dataType}" styleClass="{!IF(CONTAINS(wF.type, 'Read Only'), 'readOnly', '')}" required="false" rendered="{!NOT(AND(CONTAINS(wF.type, 'Read Only'), OR(wF.dataType='REFERENCE', wF.defaultValue='') ))}" />
+                                                                <!-- Show read-only fields as output fields if they are reference type or no default value provided -->
+                                                                <apex:outputField value="{!wR.sObj[wF.name]}" html-data-defaultvalue="{!wF.defaultValue}" html-data-erase="{!wF.erase}" html-data-datatype="{!wF.dataType}" rendered="{!AND(CONTAINS(wF.type, 'Read Only'), OR(wF.dataType='REFERENCE', wF.defaultValue='') )}" />
+                                                            </div>
+                                                            
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                </apex:repeat>
+                                            </tr>   
+                                        </apex:repeat>  
+                                    </table>    
+                                </apex:outputPanel> 
+                            </apex:pageBlockSectionItem>    
+                        </apex:pageBlockSection>
+                    </apex:repeat>  
+                </apex:pageBlock>
+                
+                <apex:outputtext id="msgError" value="{!errorMessage}" styleClass="error" title="Error" escape="false" />           
+            </apex:outputPanel>
+            
+        </apex:form>
+        
+        <hr />
+        We are listening. Please <a title='support@gocloudz.com' href='mailto:support@gocloudz.com'><span class="helpLink">Email</span></a> us if you need any help customizing the app or need technical support.
+    
+    </apex:outputPanel> 
+            
+    <script type='text/javascript'>
+                
+        //Select all records for given related list
+        function selectAll (field){
+            try{
+                var isChecked = document.getElementById(field).checked;                
+                var table = $(document.getElementById(field)).closest('.tblFields');
+                console.log(isChecked);
+                console.log(table);                
+                $(table).find('.select').prop('checked', isChecked);
+            }
+            catch(err) {
+                console.log('selectAll() exception: ' + err.message);
+            } 
+        }
+        
+                    
+        //Validate form
+        var validateForm = function(){
+                                                                                                                           
+            try{                
+                //Prevent user from clicking the button multiple times. Ideal solution is to disable the button, but that is not working
+                if($("input:button.save").prop('value') != 'loading..'){
+                    
+                    var fieldValue, focusField=true, formValid=true;             
+                    var table = $("table[id$='mainForm'] table tbody");
+                                    
+                    //Validate each required input field. They have parent div tag with "requiredInput" class
+                    $("form[id$='mainForm']").find(".requiredInput :input").each(function(i){
+                        console.log($(this).val());  
+                        fieldValue = $(this).val();   
+                        
+                        //Validate field only if row is selected  
+                        var select = $(this).closest('tr').find("input.select");  
+                        console.log(select);  
+                        
+                        //Ignore the field if item is not selected 
+                        if(!($(select).prop('checked')))
+                            return true;                            
+                        
+                        //Show error message and mark form invalid
+                        if(fieldValue=="" || fieldValue=="--None--"){
+                            console.log(this);  
+                            //Only add error message if not added
+                            if($(this).next(".errorMsg").length == 0)
+                                $(this).after("<div class='errorMsg'><strong>Error:</strong> You must enter a value</div>");
+                            
+                            //Focus on 1st error
+                            if(focusField){
+                                $(this).focus();   
+                                focusField = false;
+                            }                            
+                            formValid = false;
+                        }
+                        //Remove error message id added previously
+                        else{
+                            if($(this).next(".errorMsg").length > 0)
+                                $(this).next().remove();
+                        }
+                    });        
+                                    
+                    //Save the form if form is valid
+                    if(formValid){
+                        console.log('save form');
+                        $("input:button.save").prop('value', 'loading..');
+                        save();
+                    }                
+                }
+            }
+            catch(err) {
+                console.log('validateForm() exception: ' + err.message);
+            } 
+        }
+        
+    </script>
+    
+</apex:page>
+
+        <!--<apex:includeScript value="{!URLFOR($Resource.jQuery, '/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js')}"  />
+        <apex:includeScript value="{!URLFOR($Resource.jQuery, '/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.min.js')}"  />
+        <apex:stylesheet value="{!URLFOR($Resource.jQuery, '/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.css')}"  />
+        -->
+        
+                                                            <!-- Parent Object -->
+                                                            
+                        <!-- <apex:commandButton action="{!Save}" value="Save" reRender="pnlMain, msgError" status="loading0" />
+                        <b><apex:actionStatus id="loading0" startText="loading..." /></b>
+                        -->
+      
+                                                        <!-- Required -- >
+                                                        <apex:outputPanel styleclass="requiredInput" rendered="{!IF(wF.type='Required',true,false)}" title="Required Field" layout="block">
+                                                            <apex:outputPanel styleclass="requiredBlock" layout="block" />                    
+                                                            <apex:inputField id="inputFieldParent_req" value="{!parentObj[wF.name]}" />   
+                                                            <!-- Error message -- >                                                        
+                                                            <apex:outputPanel styleclass="errorMsg" rendered="{!LEN(wF.error)!=0}"><strong><br/>Error:</strong>&nbsp;{!wF.error}</apex:outputPanel>                                            
+                                                        </apex:outputPanel>
+                                                        <!-- Read Only -- >                                          
+                                                        <apex:inputField id="inputFieldParent_read" value="{!parentObj[wF.name]}" rendered="{!IF(BEGINS(wF.type, 'Read Only'),true,false)}" />
+                                                        <!-- Neither Required nor Read Only -- >
+                                                        <apex:inputField id="inputFieldParent" value="{!parentObj[wF.name]}" rendered="{!IF(OR(wF.type='Read Only', wF.type=='Required'),false,true)}" />  
+                                                        <!-- Default field value. -- >
+                                                        <script type="text/javascript">                                                                                                 
+                                                            var field = document.getElementById('{!JSINHTMLENCODE($Component.inputFieldParent)}'); //Neither Required nor Read Only field
+                                                            if(field==null)                                                   
+                                                                field = document.getElementById('{!JSINHTMLENCODE($Component.inputFieldParent_req)}'); //Required field
+                                                            if(field==null)                                             
+                                                                field = document.getElementById('{!JSINHTMLENCODE($Component.inputFieldParent_read)}'); //Read Only field
+                                                                
+                                                            if(field!=null){  
+                                                                if('{!JSINHTMLENCODE(wF.defaultValue)}'=='ERASE'){
+                                                                    if('{!JSINHTMLENCODE(wF.dataType)}'=='BOOLEAN')
+                                                                        field.checked = false;
+                                                                    else                                                            
+                                                                        field.value = '';
+                                                                }
+                                                                else if({!wF.takeDefault}){
+                                                                    if('{!JSINHTMLENCODE(wF.dataType)}'=='BOOLEAN'){
+                                                                        if('{!JSINHTMLENCODE(wF.defaultValue)}'=='TRUE')
+                                                                            field.checked = true;
+                                                                        else
+                                                                            field.checked = false;
+                                                                    }
+                                                                    else
+                                                                        field.value = '{!JSINHTMLENCODE(wF.defaultValue)}';
+                                                                }
+                                                                
+                                                                //Prevent user from editing Read Only fields
+                                                                if('{!JSINHTMLENCODE(wF.type)}'=='Read Only')
+                                                                    field.disabled = true;
+                                                            }   
+                                                        </script>
+                                                        -->
+
+                                                            <!-- Child Objects -->   
+                                                            
+                        <!-- <apex:commandButton action="{!Save}" value="Save" reRender="pnlMain, msgError" status="loading0" />
+                        <b><apex:actionStatus id="loading0" startText="loading..." /></b>
+                        <br /> -->
+                        
+                                                <!--  <apex:outputPanel >
+                                                    <apex:inputCheckbox id="selectAll" value="{!wO.selectAll}" immediate="true">                       
+                                                        <apex:actionSupport event="onclick" action="{!selectAll}" immediate="true" reRender="childChkBox, childRecord, selectAll" status="loading1"> 
+                                                            <apex:param name="wObj" value="{!wO.objName}"/>                                                                                       
+                                                            <apex:param name="sObj" value="all"/>                                                                                                      
+                                                            <apex:param name="wRelField" value="{!wO.relField}"/>                                                                                                            
+                                                            <apex:param name="wRecordType" value="{!wO.recordType}"/> 
+                                                        </apex:actionSupport>
+                                                    </apex:inputCheckbox> 
+                                                    <apex:actionStatus id="loading1" startText="..." />                      
+                                                </apex:outputPanel> -->    
+                                                                                             
+                                                    <!--
+                                                    <apex:outputPanel id="childChkBox">
+                                                        <apex:actionRegion >            
+                                                            <apex:inputCheckbox styleClass="select" value="{!wR.selected}">
+                                                                <apex:actionSupport action="{!selectAll}"  event="onclick" rerender="childRecord">                                                                                                  
+                                                                    <apex:param name="wObj" value="{!wO.objName}" />                                                                                            
+                                                                    <apex:param name="sObj" value="{!wR.sObj['Id']}" />                                                                                                      
+                                                                    <apex:param name="wRelField" value="{!wO.relField}"/>                                                                                                            
+                                                                    <apex:param name="wRecordType" value="{!wO.recordType}"/>  
+                                                                </apex:actionSupport>
+                                                            </apex:inputCheckbox>
+                                                        </apex:actionRegion>
+                                                    </apex:outputPanel>
+                                                    -->       
+                                                               
+                                                            <!-- Required -- >                            
+                                                            <apex:outputPanel styleclass="requiredInput" rendered="{!IF(wF.type='Required',true,false)}" title="Required Field" layout="block">
+                                                                <apex:outputPanel styleclass="requiredBlock" layout="block" />   
+                                                                <apex:inputField id="inputFieldChild_req" value="{!wR.sObj[wF.name]}" />    
+                                                                <!-- Error message -- >                                                        
+                                                                <apex:outputPanel styleclass="errorMsg" rendered="{!LEN(wF.error)!=0}"><strong><br/>Error:</strong>&nbsp;{!wF.error}</apex:outputPanel>                                                               
+                                                            </apex:outputPanel>
+                                                                                   
+                                                            <!-- Read Only -- >  
+                                                            <apex:inputField id="inputFieldChild_read" value="{!wR.sObj[wF.name]}" rendered="{!IF(CONTAINS(wF.type, 'Read Only'),true,false)}" />
+                                                            
+                                                            <!-- Neither Required nor Read Only -- >
+                                                            <apex:inputField id="inputFieldChild" value="{!wR.sObj[wF.name]}" rendered="{!IF(CONTAINS(wF.type, 'Read Only'),false,(wF.type!='Required'))}" />  
+                                                                    
+                                                            <!-- Set disabled attr. and default field value. -- >   
+                                                            <script type="text/javascript">                                                                                                 
+                                                                var field = document.getElementById('{!JSINHTMLENCODE($Component.inputFieldChild)}'); //Neither Required nor Read Only field
+                                                                if(field==null)                                                   
+                                                                    field = document.getElementById('{!JSINHTMLENCODE($Component.inputFieldChild_req)}'); //Required field
+                                                                if(field==null)                                                   
+                                                                    field = document.getElementById('{!JSINHTMLENCODE($Component.inputFieldChild_read)}'); //Read Only field
+                                                                    
+                                                                if(field!=null){  
+                                                                    if('{!JSINHTMLENCODE(wF.defaultValue)}'=='ERASE'){
+                                                                        if('{!JSINHTMLENCODE(wF.dataType)}'=='BOOLEAN')
+                                                                            field.checked = false;
+                                                                        else                                                                
+                                                                            field.value = '';
+                                                                    }
+                                                                    else if({!wF.takeDefault}){
+                                                                        if('{!JSINHTMLENCODE(wF.dataType)}'=='BOOLEAN'){
+                                                                            if('{!JSINHTMLENCODE(wF.defaultValue)}'=='TRUE')
+                                                                                field.checked = true;
+                                                                            else
+                                                                                field.checked = false;
+                                                                        }
+                                                                        else
+                                                                            field.value = '{!JSINHTMLENCODE(wF.defaultValue)}';
+                                                                    }                                        
+                                                                    
+                                                                    //Prevent user from editing Read Only fields
+                                                                    //if('{!JSINHTMLENCODE(wF.type)}'=='Read Only' || '{!NOT(wR.selected)}'=='true')
+                                                                    if('{!JSINHTMLENCODE(wF.type)}'=='Read Only')
+                                                                        field.disabled = true;
+                                                                }   
+                                                            </script>
+                                                            -->

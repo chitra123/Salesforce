@@ -1,0 +1,36 @@
+<apex:page standardController="SubjectClass__c" extensions="SubjectClassInputController">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Class">
+                <apex:outputText value="{!className}" label="class"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Subjects added:" >
+	            <apex:outputText label="subjects added:" >
+	                <apex:repeat value="{!subjObj}" var="ss" id="rep">
+	                	<apex:outputText value="  "/>
+	                	<apex:commandLink action="/{!ss.id}" value="{!ss.name}" target="_blank"></apex:commandLink>
+                	</apex:repeat>
+	            </apex:outputText>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="4" id="det">
+            <table><tr>
+                <td><apex:selectList value="{!selectedSubjs}" size="1" label="Subjects" multiselect="true">
+                    <apex:selectOptions value="{!subjList}" ></apex:selectOptions>
+                </apex:selectList></td><td>
+                <table><tr><td>
+                <apex:commandButton value="Add>>" action = "{!addItems}" rerender="det"/>
+                </td></tr><tr><td>
+                <apex:commandButton value="<<Remove" action="{!removeItems}"/></td></tr>
+                </table></td><td>
+                <apex:selectList size="1"  multiselect="true" label="selected List:" value="{!removeList}">
+                    <apex:selectOptions value="{!selectedList}" ></apex:selectOptions>
+                </apex:selectList></td>
+                </tr></table>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}"></apex:commandButton>
+                <apex:commandButton value="Cancel" action="{!cancel}"></apex:commandButton>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

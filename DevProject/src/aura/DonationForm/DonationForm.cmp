@@ -1,0 +1,46 @@
+<aura:component controller="DonationController">
+    <aura:attribute name="donation" type="Donation__c" default="{ 'sobjectType': 'Donation__c' }"/>
+    <aura:registerEvent name="eventAmt" type="c:UpdateAmt"/>
+    <aura:registerEvent name="donorList" type="c:UpdateDonorList"/>
+    
+    <div class = "slds-container_small slds-m-around_medium slds-box--border">
+        <div class="slds-page-header ">
+            <h1 class="slds-page-header__title slds-truncate slds-align-middle slds-text-title--caps slds-align_absolute-center" title="Donation">Donation</h1>
+            <p class="slds-text-body_small slds-line-height_reset slds-align_absolute-center"><b>Donation Form</b></p>
+        </div>
+        <div class = "slds-form slds-form_horizontal slds-p-top--x-large slds-p-right--large slds-p-bottom_medium">
+            <div class="slds-form-element">
+                <label class="slds-form-element__label slds-grid_pull-padded-medium" for="input-unique-id">Donor Name</label>
+                <div class="slds-form-element__control">
+                    <force:inputField aura:id="donationName" value="{!v.donation.devTest123__Donor_Name__c}" class="slds-input slds-grid--pull-padded-x-small"/>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label slds-grid_pull-padded-medium" for="input-unique-id">Amount</label>
+                <div class="slds-form-element__control">
+                    <force:inputField aura:id="donationName" value="{!v.donation.devTest123__Amount__c}" class="slds-input slds-grid--pull-padded-x-small"/>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label slds-grid_pull-padded-medium" for="input-unique-id">Donation Date</label>
+                <div class="slds-form-element__control">
+                    <div >
+                        <force:inputField aura:id="donationName" value="{!v.donation.devTest123__Donation_Date__c}" 
+                                          class="slds-input slds-date slds-grid--pull-padded-x-small"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <label class="slds-form-element__label slds-grid_pull-padded-medium" for="input-unique-id">Notes</label>
+                <div class="slds-form-element__control">
+                    <force:inputField aura:id="donationName" value="{!v.donation.devTest123__Note__c}" class="slds-input slds-grid--pull-padded-x-small"/>
+                </div>
+            </div>
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <lightning:button variant="brand" label="Save" onclick="{!c.saveDonorInfo}" class="slds-align_absolute-center"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

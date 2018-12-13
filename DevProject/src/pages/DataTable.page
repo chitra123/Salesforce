@@ -1,0 +1,21 @@
+<apex:page controller="DataTableController" action="{!getAccounts}" standardStylesheets="false">
+    <apex:includeScript value="{!$Resource.jquerymin}"  />
+    <apex:includeScript value="{!$Resource.DatatableJS}"/>
+    <apex:stylesheet value="/Resource/DatatableCSS.css"/>
+    
+    <script>
+        $ = jQuery.noConflict();
+        $(document).ready(function(){
+            $('[id$=myTable]').DataTable();
+        });
+    </script>
+   
+   <!-- <c:PageBlockTableEnhancerADV targetPbTableIds="pbt"  pageSizeOptions="5,10,15,30" defaultPageSize="15" enableExport="false"/>-->
+    <apex:pageBlock title="Account List" >
+        <apex:pageBlockTable value="{!accountList}" var="acc" id="myTable">
+            <apex:column value="{!acc.ID}" headerValue="ID" id="col1"/>
+            <apex:column value="{!acc.Name}" headerValue="Name"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+</apex:page>

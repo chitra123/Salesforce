@@ -1,0 +1,45 @@
+<apex:page standardStylesheets="false" id="Trainingdatepage" showHeader="false" sidebar="false" docType="html-5.0">
+   
+    
+    <apex:includeScript value="{!$Resource.jquerymin}"/>
+    <apex:includeScript value="{!$Resource.Moment}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DatePicker_aljs, '/jquery.aljs-init.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DatePicker_aljs, '/jquery.aljs-datepicker.min.js')}"/>
+    <!-- Lightning Design System Source -->
+    <apex:slds />
+    <apex:includeLightning />
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <script src="https://s-dev-dev-ed.my.salesforce.com/lightning/lightning.out.js"></script>
+        <script>
+        
+        $Lightning.use("c:MultiuserCalApp", function() {
+        $Lightning.createComponent(
+            "c:MultiuserCal",
+            {"objectID":""},
+            "userinput",
+            function(cmp) {
+                
+               
+            });
+        });
+        
+        /*j$(document).ready(function() {
+            
+            //Initializing Datepicker with options To The SLDS Input on document ready.
+            
+            j$('.date').datepicker({
+                initDate: moment(), //Today Date
+                defaultDate : null,
+                format: 'YYYY/MM/DD'//Date Format Of Datepicker Input Field
+                
+            });
+        });*/
+        </script>
+        <apex:form >
+            <div id = "userinput">
+                
+            </div>
+        
+        </apex:form>
+    </html>
+</apex:page>

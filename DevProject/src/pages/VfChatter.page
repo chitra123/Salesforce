@@ -1,0 +1,13 @@
+<apex:page controller="VFC_Chatter" showHeader="false">
+    <style>
+        .header{font-size : 15pt; font-weight : bold; color : #FF0000;}
+    </style>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="2">
+                <apex:image value="{!$Resource.Chatter_HeaderLogo}" width="120" height="100" />
+                <apex:outputText value="Chatter" styleClass="header"></apex:outputText>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

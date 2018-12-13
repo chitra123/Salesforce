@@ -1,0 +1,17 @@
+<apex:page controller="AnnotationTest_Controller"> 
+    <apex:includeScript value="{!URLFOR($Resource.annotorious, '/annotorious-0.6.3/annotorious.min.js')}"  />
+    <apex:includeScript value="{!$Resource.jQueryUI}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.annotorious, '/annotorious-0.6.3/css/annotorious.css')}"  />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+
+    <script>
+  function init() {
+    anno.makeAnnotatable(document.getElementById('theIframe'));
+  }
+  
+
+</script>       
+<body onload="init();">
+  <img src="{!$Resource.hms}" id="myImage" class="annotatable" width = "500" height = "200" />
+</body>
+</apex:page>

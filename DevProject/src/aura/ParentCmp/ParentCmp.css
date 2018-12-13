@@ -1,0 +1,4 @@
+.THIS p{
+    font-family: token(myBodyTextFontFace);
+    font-weight: token(myBodyTextFontWeight);
+}

@@ -1,0 +1,4 @@
+<apex:page controller="Test_SendEmail" renderAs="pdf">
+    {!strMsg}
+    {!stringFromAPI}
+</apex:page>

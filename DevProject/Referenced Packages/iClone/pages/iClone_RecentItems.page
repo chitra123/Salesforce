@@ -1,0 +1,30 @@
+<apex:page controller="sfcloud1.iClone_RecentItems" title="iClone :: {!parentObjLabel}" tabStyle="sfcloud1__iClone__c"> 
+
+    <apex:form >
+        <style>
+            .bold {
+                color: black;
+                font-size: 1.5em;
+            }
+        </style>
+        
+        <div class="bold">
+            <br/><br/>Recently Cloned {!parentObjLabel}:<br/><br/>
+        </div>
+        
+        <apex:repeat value="{!recentItems}" var="id">
+            <span class="cloneNumber"></span> - <a href="/{!id}" target="_blank">{!id}</a><br/>
+        </apex:repeat>
+        
+        <!-- Script to increment asset number. But won't work when the page is rendered as pdf --> 
+        <script type="text/javascript">
+            var list = document.getElementsByClassName("cloneNumber");
+            for (var i = 1; i <= list.length; i++) {
+                list[i-1].innerHTML = i;
+            }
+        </script>                
+            
+        <!-- <apex:dynamicComponent componentValue="{!Links}"/> -->
+    
+    </apex:form>     
+</apex:page>

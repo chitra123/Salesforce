@@ -1,0 +1,39 @@
+<aura:component controller="LightningTrainingController">
+    <aura:attribute name="listRec" type="String[]" default="['---None--']"/>
+    <aura:attribute name="flag" type="Boolean" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="render" value="{!this}" action="{!c.onRender}"/>
+    
+    <div class="slds-box">
+        <div class = "slds-p-bottom--large">
+            <aura:if isTrue="{!v.flag}">
+                <lightning:button name="test" label="test" onclick="{!c.getValues}"/>
+                <aura:set attribute="else">
+                    <lightning:button name="test" label="test" aura:id="btn" onclick="{!c.getValues}"/>
+                </aura:set>
+            </aura:if>
+            <lightning:button name="test" label="test" aura:id="btn"/>            
+        </div>
+        
+        <div class = "slds-p-bottom--large">
+            <lightning:select name="select" label="Accounts" onfocus="{!c.getValues}">
+                <aura:iteration items="{!v.listRec}" var="item">
+                    <option value="{!item}" text="{!item}"></option>
+                </aura:iteration>
+            </lightning:select>
+        </div>        
+		        
+        <lightning:tabset variant="scoped">
+            <lightning:tab label="Tab One" id="accounts">
+                Tab One 
+            </lightning:tab>
+            <lightning:tab label="Tab Two" id="cases">
+                Tab Two
+                <aura:iteration items="{!v.listRec}" var="item">
+                    {!item}<br/>
+                </aura:iteration>
+            </lightning:tab>
+        </lightning:tabset>
+    </div>
+</aura:component>

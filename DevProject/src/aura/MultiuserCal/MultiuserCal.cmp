@@ -1,0 +1,77 @@
+<aura:component controller="MultiCal_controller">
+   
+    <aura:attribute name="meetingDate" type="date" default="YYYY/MM/DD"/>
+    <aura:attribute name="dateFormat" type="String" default=""/>
+    <aura:attribute name="objectID" type="String" default=""/>
+    <aura:attribute name="location" type="String" default=""/>
+    <aura:attribute name="userId" type="String"/>
+    <aura:attribute name="profileId" type="String"/>
+    
+    <aura:handler name="setValue" event="c:ParameterEvent" action="{!c.handleComponentEvent}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	
+    <!--Header Section -->
+    <div class="slds">
+        <div class="slds-page-header">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media slds-no-space slds-grow">
+                        <div class="slds-media__figure">
+                            <lightning:icon iconName="standard:people" size="medium" alternativeText="Scheduler"/>
+                            <!--<c:svgIcon svgPath="/resource/SLDS100/assets/icons/standard-sprite/svg/symbols.svg#people" category="standard" size="medium" name="people" class = ""/>-->
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-title--caps slds-line-height--reset">Multi-User Calendar</p>
+                            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="Schedule an Appointment">Schedule an Appointment</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--Input Section -->
+        <div aura:id = "input" class = "slds-box slds-theme--shade"> 
+            <h3 class="slds-section-title--divider">Enter Information</h3>
+            
+            <!--<aura:unescapedHtml value="{!$Label.c.HTML_Text}"/>-->
+            <form class="slds-form--stacked slds-grid slds-wrap slds-grid--pull-padded">
+                <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 slds-m-left--medium">
+                    <c:DatePicker_aljs dateLabel="Meeting Date" dateFormat="YYYY/MM/DD"/>
+                </div>
+                <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 slds-m-left--medium">
+                    <c:CustomLookup objectName="User" fieldName="Name" minLen="3" icon="action:user" inputLabel="User"/>
+                </div>
+                <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 slds-m-left--medium slds-p-top--small">
+                    <c:CustomLookup objectName="Profile" fieldName="Name" minLen="3" icon="standard:team_member" inputLabel="Profile"/>
+                </div>
+                <div class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-3 slds-m-left--medium slds-p-top--small">
+                    <c:InputDropdown label="Location" aura:id="picklist"/>
+                </div>
+                <div class="slds-p-horizontal--small slds-size--1-of-1 slds-grid slds-wrap slds-grid--pull-padded slds-m-left--medium slds-p-top--small">
+                    <div class = "slds-size--1-of-2">
+                        <lightning:button variant="brand" label="Submit" onclick="{!c.getCalendar}" />
+                    </div>
+                    <div class = "slds-size--1-of-2">
+                        <lightning:button variant="neutral" label="Clear" onclick="{!c.clearAll}"/>
+                    </div>
+                </div>
+              
+            </form>
+           
+            <div>
+                <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout slds-table_col-bordered" role="grid">
+                	<tr>
+                    	<th>
+                            
+                        </th>
+                    </tr>
+                    <tr>
+                    	<td>
+                            
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,15 @@
+.THIS .searchIcon svg{
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    top: 50%;
+    margin-top: -.5rem;
+    fill: rgb(159, 170, 181);
+    left: 1.25rem;
+}
+
+.THIS .autoComp {
+    border: 1px solid rgb(216, 221, 230);
+    border-radius: .25rem;
+    background: rgb(255, 255, 255);
+}

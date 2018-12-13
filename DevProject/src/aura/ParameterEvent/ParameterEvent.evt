@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="Event template">
+    <aura:attribute name="paramName" type="String"/>
+    <aura:attribute name="dateVal" type="Date"/>
+    <aura:attribute name="fieldValue" type="String"/>
+</aura:event>

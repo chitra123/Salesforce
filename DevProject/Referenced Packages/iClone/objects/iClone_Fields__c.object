@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>iClone_RedirectField</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>iClone_Documentation</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Configure fields for cloning.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>API_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>API name for the field. For custom fields, it must end with &apos;__c&apos;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name for the field. For custom fields, it must end with &apos;__c&apos;</inlineHelpText>
+        <label>API Name</label>
+        <length>200</length>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Default_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Value users would see if the field is blank in the record that is cloned.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Value users would see if the field is blank in the record that is cloned.</inlineHelpText>
+        <label>Default Value</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Erase__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Erase field value while cloning</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Erase field value while cloning</inlineHelpText>
+        <label>Erase</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Field_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Field data type</description>
+        <externalId>false</externalId>
+        <label>Field Type</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hide_Field__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Hide this field while cloning the record</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Hide this field while cloning the record</inlineHelpText>
+        <label>Hide Field</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Custom__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Is this a standard or custom field?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this a standard or custom field?</inlineHelpText>
+        <label>Custom?</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Object_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Related object</description>
+        <externalId>false</externalId>
+        <label>Object Name</label>
+        <referenceTo>iClone__c</referenceTo>
+        <relationshipName>Fields</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Order in which the field is displayed on VF page while cloning.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Order in which the field is displayed on VF page while cloning.</inlineHelpText>
+        <label>Order</label>
+        <precision>3</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Is this read only, unique or required field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this read only, unique or required field.</inlineHelpText>
+        <label>Type</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Read Only</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Required</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Use_First_as_Master__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Set the flag, if you need to copy the field value from 1st record across all the records.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Set the flag, if you need to copy the field value from 1st record across all the records.</inlineHelpText>
+        <label>Use First as Master</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>iClone Field</label>
+    <nameField>
+        <label>Name</label>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>iClone Fields</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>API_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Default_Value__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Object_Name__c</customTabListAdditionalFields>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <lookupDialogsAdditionalFields>API_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Default_Value__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Object_Name__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>API_Name__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Default_Value__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Object_Name__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>API_Name__c</searchFilterFields>
+        <searchFilterFields>Default_Value__c</searchFilterFields>
+        <searchFilterFields>Object_Name__c</searchFilterFields>
+        <searchResultsAdditionalFields>API_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Default_Value__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Object_Name__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>validateField</fullName>
+        <active>true</active>
+        <description>Required fields cannot be blanked out and at the same time be hidden.</description>
+        <errorConditionFormula>AND(
+    Default_Value__c=&quot;ERASE&quot;, 
+    Hide_Field__c=true,
+    CONTAINS(TEXT(Type__c), &quot;Required&quot;)
+)</errorConditionFormula>
+        <errorDisplayField>Default_Value__c</errorDisplayField>
+        <errorMessage>Required fields cannot be blanked out and at the same time be hidden.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Configure_Fields</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Configure Fields</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+
+
+window.location = &apos;/apex/sfcloud1__iClone_Configure?parentId={!iClone__c.Parent_ObjectId__c}&amp;parentAPIName={!iClone__c.Parent_Object__c}&amp;childId={!iClone__c.Id}&amp;childAPIName={!iClone__c.API_Name__c}&amp;type={!iClone__c.Type__c}&amp;recordType={!iClone__c.Record_Type__c}&amp;relField={!iClone__c.Relationship_Field__c}&amp;returnURL={!iClone__c.Id}&apos;;</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,54 @@
+.THIS{
+    padding: 2px;
+    margin:5px;
+    border-radius:3px;
+    border: 1px solid #54698d;
+}
+.THIS .state{
+    background-color: #f7f9fb;
+    text-align: center;
+    padding-top: 10px;
+}
+.THIS .state-label{
+    color: #54698d;
+}
+.THIS .slds-grow:not(:last-child) .state .state-label::after{
+    position: absolute;
+    content: '';
+    background-color: #d8dde6;
+    height: 2px;
+    width: 50%;
+    top: -14px;
+    left: 52%;
+    
+}
+.THIS .slds-grow:not(:first-child) .state .state-label::before{
+    position: absolute;
+    content: '';
+    background-color: #d8dde6;
+    height: 2px;
+    width: 50%;
+    top: -14px;
+    left: -2%;
+    
+}
+.THIS .state-base .slds-icon-text-default{
+    fill: #d8dde6;
+}
+.THIS .state-base{
+    height: 24px;
+    position: relative;
+    z-index: 1;
+}
+.THIS .state-pass .state-base .slds-icon-text-default{
+    fill: #4bca81;
+}
+.THIS .slds-grow.state-pass .state .state-label::before{
+    background-color: #4bca81;
+}
+.THIS .slds-grow.state-pass .state .state-label::after{
+    background-color: #4bca81;
+}
+.THIS .slds-grow.state-pass .state .state-label.last::after{
+ 	background-color: #d8dde6;   
+}

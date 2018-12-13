@@ -1,0 +1,51 @@
+<aura:component controller="DonationController">
+    <aura:attribute name="donorList" type="List" default="[{'sobjectType': 'devTest123__Donation__c'}]"/>
+    <aura:attribute name="count" type="Integer" default="1"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.getInit}"/>
+    <aura:handler event="c:UpdateDonorList" action="{!c.updateList}"/>
+    
+    <div class = "slds-box slds-m-around_medium">
+        <aura:if isTrue="{!!empty(v.donorList)}">
+            <table class="slds-table">
+                <tr class="slds-text-title_caps">
+                    <!--<th scope="col">
+                        <div class="slds-truncate" title="Sr Num"></div>
+                    </th>-->
+                    <th scope="col">
+                        <div class="slds-truncate" title="Donor Name">Donor Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Donor Amount">Donation Amount</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Donation Date">Donation Date</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Notes">Notes</div>
+                    </th>
+                </tr>
+                <aura:iteration items="{!v.donorList}" var="don">
+                    <tr>
+                        <!--<td data-label="Sr Num">
+                            <div class="slds-truncate" title="Cloudhub">{!v.count+1}</div>
+                        </td>-->
+                        <td data-label="Donor Name">
+                            <div class="slds-truncate" title="Cloudhub">{!don.devTest123__Donor_Name__c}</div>
+                        </td>
+                        <td data-label="Donor Amount">
+                            <div class="slds-truncate" title="Cloudhub">{!don.devTest123__Amount__c}</div>
+                        </td>
+                        <td data-label="Donation Date">
+                            <div class="slds-truncate" title="Cloudhub">{!don.devTest123__Donation_Date__c}</div>
+                        </td>
+                        <td data-label="Notes">
+                            <div class="slds-truncate" title="Cloudhub">{!don.devTest123__Note__c}</div>
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </table>
+            
+        </aura:if>
+    </div>
+</aura:component>

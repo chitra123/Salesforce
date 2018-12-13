@@ -1,0 +1,86 @@
+<aura:component controller="CustHeaderController" access="global">
+    <aura:attribute name="accountId" type="Id"/>
+    <aura:attribute name="accountRec" type="Account"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <button id = "click" onclick = "{!c.clickBtn}">Click me</button>
+    <div class="slds-grid">
+        <div class="slds-col--padded slds-box slds-size--2-of-9">
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <span class="slds-avatar slds-avatar--x-small">
+                        <img id = "click" src="/resource/Default" alt="{!v.accountRec.Name}" style = "width: 60px;"/>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <div class="slds-clearfix">
+                        <div class="slds-float--right">
+                            <a href="#" onclick="{!c.openAccount}">
+                                <c:svgIcon svgpath="/resource/SLDS/assets/icons/action-sprite/svg/symbols.svg#edit" category="action" size="small" name="edit" class="slds-icon-text-default" />
+                            </a>
+                        </div>
+                        <div class="slds-float--left slds-text-heading--small"><b>{!v.accountRec.Name}</b></div>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size--1-of-2">
+                            <p>
+                                <span class="slds-text-heading--label">Age</span>&nbsp;&nbsp;
+                                <span class="slds-text">49</span>
+                            </p>
+                        </div>
+                        <div class="slds-size--1-of-2">
+                            <p>
+                                <span class="slds-text-heading--label">Retirement Age</span>&nbsp;&nbsp;
+                                <span class="slds-text">65</span>
+                            </p>
+                        </div>
+                        <div class="slds-size--2-of-2">
+                            <p>
+                                <span class="slds-text-heading--label">Current Employer</span>&nbsp;&nbsp;
+                                <span class="slds-text">VMware</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col--padded slds-box slds-size--1-of-9">
+            <div class="slds-clearfix">
+                <div class="slds-float--right">
+                    <a href="#" onclick="{!c.openOutlook}">
+                        <c:svgIcon svgpath="/resource/SLDS/assets/icons/action-sprite/svg/symbols.svg#web_link" category="action" size="small" name="web_link" class="slds-icon-text-default" />
+                    </a>
+                </div>
+                <div class="slds-float--left slds-text-heading--small"><b>Retirement Outlook</b></div>
+            </div>
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <c:svgIcon svgpath="/resource/SLDS/assets/icons/custom-sprite/svg/symbols.svg#custom3" category="custom" size="small" name="custom3" class="slds-icon-text-warning" />
+                </div>
+                <div class="slds-media__body">
+                    <div class="slds-text">Sunny</div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col--padded slds-box slds-size--1-of-9">
+            <div class="slds-clearfix">
+                <div class="slds-float--right">
+                    <a href="#" onclick="{!c.openFinancialWellness}">
+                        <c:svgIcon svgpath="/resource/SLDS/assets/icons/action-sprite/svg/symbols.svg#web_link" category="action" size="small" name="web_link" class="slds-icon-text-default" />
+                    </a>
+                </div>
+                <div class="slds-float--left slds-text-heading--small"><b>Financial Wellness</b></div>
+            </div>
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                    <c:svgIcon svgpath="/resource/SLDS/assets/icons/utility-sprite/svg/symbols.svg#chart" category="utility" size="small" name="chart" class="slds-icon-text-default" />
+                </div>
+                <div class="slds-media__body">
+                    <div class="slds-text">86</div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col--padded slds-box slds-size--5-of-9">
+
+        </div>
+    </div>
+</aura:component>

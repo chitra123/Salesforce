@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <content>iClone_RedirectObj</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>iClone_RedirectObj</content>
+        <skipRecordTypeSelect>true</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>iClone_Documentation</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Configure parent and child objects for cloning.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>API_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>API name of the object</description>
+        <externalId>false</externalId>
+        <label>API Name</label>
+        <length>255</length>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Default_selected__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Are the child records selected by default while cloning?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Are the child records selected by default while cloning?</inlineHelpText>
+        <label>Default selected?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Order in which child object should be displayed on VF page</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Order in which child object should be displayed while cloning</inlineHelpText>
+        <label>Order</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Parent_Object__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to parent object</description>
+        <externalId>false</externalId>
+        <label>Parent Object</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>iClone__c.Type__c</field>
+                <operation>equals</operation>
+                <value>Parent</value>
+            </filterItems>
+            <infoMessage>Select Parent Object</infoMessage>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>iClone__c</referenceTo>
+        <relationshipLabel>iClone Related Lists</relationshipLabel>
+        <relationshipName>Parent_Object</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Record_Type__c</fullName>
+        <defaultValue>&quot;N/A&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Record type specific configuration.</description>
+        <externalId>false</externalId>
+        <label>Record Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Relationship_Field__c</fullName>
+        <defaultValue>&quot;N/A&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The field that relates child record to its parent.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The field that relates child record to its parent.</inlineHelpText>
+        <label>Relationship Field</label>
+        <length>200</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Instead of record type, we are using custom field to support PE orgs.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Is this parent or child object?</inlineHelpText>
+        <label>Type</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Parent</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Child</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Unique_fields__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Number of unique fields for this object. This field is reference in validation rule that prevents user from deleting unique fields.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of unique fields for this object</inlineHelpText>
+        <label>Unique fields #</label>
+        <summaryFilterItems>
+            <field>iClone_Fields__c.Type__c</field>
+            <operation>contains</operation>
+            <value>Unique*</value>
+        </summaryFilterItems>
+        <summaryForeignKey>iClone_Fields__c.Object_Name__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>iClone</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>API_Name__c</columns>
+        <columns>Parent_Object__c</columns>
+        <columns>Record_Type__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Child_Objects</fullName>
+        <columns>NAME</columns>
+        <columns>API_Name__c</columns>
+        <columns>Parent_Object__c</columns>
+        <columns>Record_Type__c</columns>
+        <columns>Default_selected__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Type__c</field>
+            <operation>equals</operation>
+            <value>Child</value>
+        </filters>
+        <label>Child Objects</label>
+    </listViews>
+    <listViews>
+        <fullName>Parent_Objects</fullName>
+        <columns>NAME</columns>
+        <columns>API_Name__c</columns>
+        <columns>Record_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Type__c</field>
+            <operation>equals</operation>
+            <value>Parent</value>
+        </filters>
+        <label>Parent Objects</label>
+    </listViews>
+    <nameField>
+        <label>Name</label>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>iClone</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>API_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Parent_Object__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Record_Type__c</customTabListAdditionalFields>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <lookupDialogsAdditionalFields>API_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Parent_Object__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Record_Type__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>API_Name__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Parent_Object__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Record_Type__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>API_Name__c</searchFilterFields>
+        <searchFilterFields>Parent_Object__c</searchFilterFields>
+        <searchFilterFields>Record_Type__c</searchFilterFields>
+        <searchResultsAdditionalFields>API_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Parent_Object__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Record_Type__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>Cannot_delete_fields</fullName>
+        <active>false</active>
+        <description>Cannot delete unique fields.</description>
+        <errorConditionFormula>PRIORVALUE(Unique_fields__c ) &gt;  Unique_fields__c</errorConditionFormula>
+        <errorMessage>Unique fields cannot be deleted.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Configure_Related_Lists</fullName>
+        <availability>online</availability>
+        <description>Configure related lists / child objects</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Configure Related Lists</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)}
+
+if(&apos;{!iClone__c.Type__c}&apos;==&apos;Parent&apos;){
+   window.location = &apos;/apex/sfcloud1__iClone_Configure?parentId={!iClone__c.Id}&amp;parentAPIName={!iClone__c.API_Name__c}&amp;returnURL={!iClone__c.Id}&amp;type=Child&amp;childAPIName=All&apos;;
+}
+//Redirect user to show child picklist, as user cannot add related list to child object
+else if(&apos;{!iClone__c.Type__c}&apos;==&apos;Child&apos;){
+   window.location = &apos;/apex/sfcloud1__iClone_Configure?childAPIName=All&amp;parentId={!iClone__c.Parent_ObjectId__c}&amp;parentAPIName={!iClone__c.Parent_Object__c}&amp;returnURL={!iClone__c.Id}&amp;type=Child&apos;;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Delete</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Delete</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+
+var message;
+
+if (&quot;{!iClone__c.Type__c}&quot; == &quot;Parent&quot;)
+  message = &quot;You will lose all configuration for related child objects and fields.\nAre you sure?&quot;;
+else
+  message = &quot;You will lose all configuration for related fields.\nAre you sure?&quot;;
+
+if ((Modal.confirm &amp;&amp; Modal.confirm(message)) || (!Modal.confirm &amp;&amp; window.confirm(message))) 
+  window.open(&quot;{!URLFOR($Action.iClone__c.Delete,  iClone__c.Id )}&quot;, &quot;_parent&quot;);</url>
+    </webLinks>
+</CustomObject>

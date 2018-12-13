@@ -1,0 +1,12 @@
+<aura:component controller="LightningTrainingController">
+    <aura:attribute name="listRec" type="String[]" default="['1']"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div>
+        <lightning:select name="select" label="Select" >
+            <aura:iteration items="{!v.listRec}" var="item">
+                <option value="{!item}" text="{!item}"></option>
+            </aura:iteration>
+        </lightning:select>    	
+    </div>
+</aura:component>

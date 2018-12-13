@@ -1,0 +1,72 @@
+<apex:page standardController="Task" extensions="POC_TagPagination" id="mypage">
+    <script>
+    var list = [];
+    function addElement(checkbox,obj){
+        if(checkbox.checked){
+            list.push(obj);
+        }
+        else{
+            var index = list.indexOf(obj);
+            list.splice(index, 1);
+        }
+    }  
+    
+    function processSelected(){
+        alert(list);
+        assignList(list);
+    }
+    </script>
+    <apex:form id="frm">
+        <apex:pageBlock id="pb" title="Search Tasks To Be Closed">   
+            <apex:actionFunction action="{!processSelected}" name="assignList">
+                <apex:param assignTo="{!wrapperList}" value=""/>
+            </apex:actionFunction>
+            <apex:pageBlockSection columns="2">
+                <!--<apex:outputLabel for="searchText">Status</apex:outputLabel>
+                <apex:inputText id="searchText" value="{!strTaskStatus}"/>
+                <apex:inputField value="{!tsk.status}"/>-->
+                
+                <apex:repeat value="{!$ObjectType.Task.FieldSets.POC_TaskBulkClosure}" var="fieldValue">
+                    <apex:Inputfield value="{!tsk[fieldValue]}"/>
+                </apex:repeat>
+                <div align="center" draggable="false" >
+                    <apex:commandButton value="Search" action="{!search}" rerender="frm"/>
+                </div>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:actionFunction name="callSelected" action="{!processSelected}"/>
+        <c:PageBlockTableEnhancerADV targetPbTableIds="tableID"  pageSizeOptions="3,5,10,15,30" defaultPageSize="15" enableExport="false"/>
+        <apex:pageBlock id="ThePage" rendered="{!If(showResult, true, false)}">
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Close The Selected Tasks" disabled="{!ifNotCompleted}" id="button" onclick="processSelected();"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!lstSetController }" var="obj" id="tableID">
+                    <apex:column headerValue="Select">
+                        <apex:facet name="header" >
+                            <apex:inputCheckbox id="selectAll" title="Select All" styleClass="no-sort"/>
+                        </apex:facet>
+                        <apex:inputCheckbox id="checkbox" styleclass="chkProd" value="{!obj.isSelected}" onchange="addElement(this,'{!obj}');return false;"/>
+                    </apex:column> 
+                    
+                    <apex:repeat value="{!$ObjectType.Task.FieldSets.POC_TaskBulkClosure}" var="fieldValue">
+                        <apex:column value="{!obj.cont[fieldValue]}"/>
+                    </apex:repeat>
+                    
+                    <!--<apex:column value="{!obj.cont.Subject}" headerValue="Subject"/> 
+                    <apex:column value="{!obj.cont.Status}" />
+                    <apex:column value="{!obj.cont.Description}" />-->
+                </apex:pageBlockTable>
+                <!--
+                <apex:outputPanel >
+                <apex:commandButton value="<<Previous" action="{!previous}" rendered="{!hasPrevious}" reRender="ThePage" />
+                <apex:commandButton value="Next >>" action="{!next}" rendered="{!hasNext}" reRender="ThePage" />
+                </apex:outputPanel> --> 
+                
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+</apex:page>

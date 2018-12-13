@@ -1,0 +1,29 @@
+<apex:page >
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.4.2.min.js')}"  />
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.6.custom.min.js')}"  />
+	<apex:stylesheet value="{!URLFOR($Resource.jQuery, '/css/ui-lightness/jquery-ui-1.8.6.custom.css')}"  />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+	<script>
+	j$ = jQuery.noConflict();
+		jQuery(document).ready(function() {  
+		j$('[id$="button"]').click(function() {
+			alert("a");
+   			var a = j$('[id$="button"]').val();
+   			alert(a);
+   			 $dialog.dialog('open');
+   			 j$('[id$="button"]').style.fontWeight = 'bold';
+   		});
+   		});
+	</script>
+	<apex:form id="form">
+		<apex:pageBlock id="pg">
+			<apex:pageBlockSection id="pgb">
+				<!--<apex:inputText id="textId">
+				</apex:inputText>
+				 <apex:commandButton value="click" onclick="simpleJQ()"></apex:commandButton> 
+				 <apex:commandButton value="click" id="button"></apex:commandButton>-->
+				 <apex:outputText value="ttt" id="button"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

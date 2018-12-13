@@ -1,0 +1,44 @@
+<apex:component id="dataTable">
+<apex:includeScript value="{!$Resource.jquerymin}"  />
+<apex:includeScript value="{!$Resource.DatatableJS}"/>
+<apex:stylesheet value="/Resource/DatatableCSS.css"/>
+<apex:attribute type="String" name="pageSizeOptions" description="A comma seperated list of integer values that will displayed as dropdown for page size"/>
+<script>
+jQuery(document).ready(function(){
+    $('[id$="tableID"]').dataTable({
+        "aLengthMenu": getALengthMenu()
+    });
+
+    // Check / uncheck all available rows at once.
+        jQuery('#selectAll').click( function(){             
+            if(jQuery(this).is(':checked')){
+                jQuery('.chkProd').attr('checked', true);               
+            }else{
+                jQuery('.chkProd').attr('checked', false);
+            }
+           });
+ });
+ 
+ function getALengthMenu(){
+          var temp = [ 10, 20, 30, 50];
+          if({!pageSizeOptions != NULL}){ 
+              
+              temp = "{!pageSizeOptions}".split(",");
+              for (a in temp ) {
+                  temp[a] = parseInt(temp[a], 10); 
+              }
+          }
+          
+          return temp;
+      }
+</script>
+<style>
+    .paging_full_numbers .ui-button{
+        color:black !important;
+    }
+    
+    .dtExport{
+        padding:5px;
+    }
+</style>
+</apex:component>

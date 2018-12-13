@@ -1,0 +1,208 @@
+<apex:page showheader="false" standardStylesheets="false">
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.4.2.min.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.6.custom.min.js')}"  />
+    <apex:stylesheet value="{!URLFOR($Resource.jQuery, '/css/ui-lightness/jquery-ui-1.8.6.custom.css')}"  />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css"/>
+    
+    <apex:remoteObjects >
+        <apex:remoteObjectModel name="Contact" fields="Name,Id,FirstName,LastName,Phone,Title" jsShortHand="cont">
+        </apex:remoteObjectModel>
+    </apex:remoteObjects>
+    <style>
+        .colcount {
+            -webkit-column-count: 3; /* Chrome, Safari, Opera */
+            -moz-column-count: 3; /* Firefox */
+            column-count: 3;
+        }
+        
+        .textAlign{
+            position: absolute;
+            right: 0px;
+            
+        }
+        
+        .buttonAlign{
+            position: absolute;
+            width : 200px;
+            right: 0px;
+            
+        }
+        
+        .output{
+            font-size: 25px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <script type='text/javascript'>
+        
+        $ = jQuery.noConflict();
+        jQuery(document).ready(function() {
+            retrieveContact();
+            $('[id$="SearchButton"]').click(function() {
+                retrieveContact();
+            });
+            
+            $('#delete').click(function() {
+                confirm("Delete contact!");
+            });
+            
+            $("#newContact").click(function() {
+                
+                clearDialogBox();
+                dialog = $( "#dialog-form" ).dialog({
+                     autoOpen: false,
+                     height: 300,
+                     width: 400,
+                     modal: true,
+                     
+                     buttons: {
+                    "Save Changes": editContact,
+                     Cancel: function() {
+                        dialog.dialog( "close" );
+                    }
+                    },
+                  });
+                  dialog.dialog( "open" );
+                        
+            });
+        });
+        
+        function retrieveContact(){
+            var ct= new SObjectModel.cont();
+            $( "#dialog-form" ).hide();
+            ct.retrieve({
+            where:{
+            Name: { like:$('[id$="search"]').val()+'%'}
+            },
+            limit: 100
+            },function(err, records){
+                
+                if(records.length == 0){
+                    $('#noRecords').val('No records found');
+                }
+                else{
+                    records.forEach(function(record){
+                        var col = $('<div></div>');
+                        var detail = $('<p>'+ record.get("Name")+'<br/>'+record.get("Title") +'<br/>'+ record.get("Phone")+'</p>');
+                        var link1 = $('<br/><button  type = "button" id = "edit">Edit</button>              <button  type = "button" id = "delete" >Delete</button>');
+                        link1.click(function(){
+                            var dialog;
+                            $('[id$="firstName"]').val(record.get("FirstName"));
+                            $('[id$="LastName"]').val(record.get("LastName"));
+                            $('[id$="Phone"]').val(record.get("Phone"));
+                            $('[id$="Title"]').val(record.get("Title"));
+                            $('[id$="inputId"]').val(record.get("Id"));
+                            
+                            dialog = $( "#dialog-form" ).dialog({
+                                 autoOpen: false,
+                                 height: 300,
+                                 width: 400,
+                                 modal: true,
+                                 
+                                 buttons: {
+                                "Save Changes": editContact,
+                                 Cancel: function() {
+                                    dialog.dialog( "close" );
+                                }
+                                },
+                              });
+                              dialog.dialog( "open" );
+                            
+                        });
+                        detail.append(link1);
+                        col.append(detail);
+                        col.appendTo('#thumRow');
+                    });
+                }
+            });
+        }
+        
+        function editContact(){
+            var inp = $( "#inputId" ).val();
+            var updateCon = new SObjectModel.cont({
+                FirstName : $("#firstName").val(),
+                LastName : $( "#LastName" ).val(),
+                Phone : $( "#Phone" ).val(),
+                Title : $( "#Title" ).val()
+            });
+            if(inp != ''){
+                updateCon.set("Id",inp);
+                updateCon.update(callBack);
+            }
+            else{
+                updateCon.create(callBack);
+            }
+            
+        }
+        
+        function clearDialogBox(){
+            
+            $("#firstName").val('');
+            $("#LastName").val('');
+            $("#Phone").val('');
+            $("#Title").val('');
+            $("#inputId").val('');
+        }
+        
+        function callBack(err,ids){
+            
+            $( "#dialog-form" ).dialog("close");
+            if(err){
+                alert(err);
+            }
+            else{
+                 $('#thumRow').empty();
+                retrieveContact();
+            }
+        }
+        
+    </script>
+    
+    <apex:form >
+    
+        <div>
+            <button type = "button" id="newContact">New Contact</button>
+            <apex:inputText id="search"  styleClass="textAlign" size="80"/>
+            <apex:commandButton value="Search" id="SearchButton" styleClass="buttonAlign"/>
+            <br/><br/><br/>
+        </div>
+        
+        <div class = "output">
+            <output id = "noRecords"></output>
+        </div>
+        <div>
+            <div id="thumRow"  class = "colcount"></div>
+        </div>
+        
+        <div id="dialog-form" title="Create Contact">
+            <form>
+                <table>
+                    <tr>
+                        <td><label for = "firstName">First Name :</label></td>
+                        <td><input type = "text" id="firstName"/></td>
+                    </tr>
+                    <tr>
+                        <td><label for = "LastName">Last Name :</label></td>
+                        <td><input type = "text" id="LastName"/><br/></td>
+                    </tr>
+                    <tr>
+                        <td><label for = "Phone">Phone :</label></td>
+                        <td><input type = "text" id="Phone"/><br/></td>
+                    </tr>
+                    <tr>
+                        <td><label for = "Title">Title :</label></td>
+                        <td><input type = "text" id="Title"/><br/></td>
+                    </tr>
+                </table>
+                <input type = "hidden" id = "inputId"/>
+            </form>
+        </div> 
+        
+    </apex:form>
+</apex:page>

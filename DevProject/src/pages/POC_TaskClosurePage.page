@@ -1,0 +1,105 @@
+<apex:page standardController="Task" extensions="POC_TaskClosure"  docType="html-5.0">
+    <apex:includeScript value="{!$Resource.jquerymin}"  />
+    <script>
+    $ = jQuery.noConflict();
+    function selectAllcheckboxes(){
+        if( $("[id$='selectAllcheckbox']").prop( "checked" )){
+            $('.checkboxClass').prop('checked', true);               
+        }else{
+            $("[id$='checkbox']").prop('checked', false);
+        }
+    }
+    
+    function selectAllCheckboxes(obj,receivedInputID){
+        var inputCheckBox = document.getElementsByTagName("input");                  
+        for(var i=0; i<inputCheckBox.length; i++){          
+            if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                inputCheckBox[i].checked = obj.checked;
+            }
+        }
+    }
+    
+    function sortIfCreatedDate(createdDate){
+        console.log('createdDate>>',createdDate);
+    }
+    
+    </script>    
+    <apex:form id="frm">
+        <apex:pageBlock id="pb" title="Search Tasks To Be Closed">
+            <apex:pageBlockSection columns="2">
+                <apex:repeat value="{!$ObjectType.Task.FieldSets.POC_TaskBulkClosure}" var="fieldValue">
+                    <apex:Inputfield value="{!tsk[fieldValue]}"/>
+                </apex:repeat> 
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="bottom">
+                <apex:panelGroup >
+                    <apex:commandButton value="Search" action="{!search}" rerender="frm" status="Inprogress" id="button"></apex:commandButton> 
+                    <apex:actionstatus id="Inprogress">
+                        <apex:facet name="start" >
+                            <apex:image value="{!$Resource.loadingImg}" height="30" width="30"/>
+                        </apex:facet>
+                    </apex:actionstatus>
+                </apex:panelGroup>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlock id="ThePage" rendered="{!If(showResult, true, false)}">
+            <apex:pageBlockButtons location="top">
+                <apex:panelGroup >
+                    <apex:commandButton value="Close The Selected Tasks" action="{!processSelected}" disabled="{!ifNotCompleted}" status=""/>
+                    <apex:actionstatus id="sorting">
+                        <apex:facet name="start" >
+                            <apex:image value="{!$Resource.loadingImg}" height="30" width="30"/>
+                        </apex:facet>
+                    </apex:actionstatus>
+                </apex:panelGroup>
+            </apex:pageBlockButtons>
+            <!--<apex:outputLabel value="Test" o>
+            <apex:actionSupport event = "onclick" action="{!sortRecords}" reRender="ThePage">
+            <apex:param assignTo="{!sortBy}" value="q"/>
+            </apex:actionSupport>
+            </apex:outputLabel>-->
+            <apex:actionFunction action="{!sortRecords}" name="sortRecords" reRender="test,buttons" status="sorting">
+                <apex:param assignTo="{!sortByFieldValue}" value="Subject" name="sortFieldName"/>
+                <apex:param assignTo="{!upArrow}" value="{!upArrow}" name="sortOrder"/>
+            </apex:actionFunction>
+            <apex:actionFunction action="{!getPageRecord}" name="getRecords"/>
+            <apex:outputPanel id="test">
+                
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockTable value="{!lstSetController}" var="obj" id="table">
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:inputCheckbox value="{!selectAll}"  id="selectAllcheckbox" onchange="selectAllcheckboxes();"/>
+                            </apex:facet>
+                            <apex:inputCheckbox value="{!obj.isSelected}" styleClass="checkboxClass"  id="checkbox"/>
+                        </apex:column> 
+                        
+                        <apex:repeat value="{!$ObjectType.Task.FieldSets.POC_TaskClosureResultFieldset}" var="fieldValue">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:outputPanel >
+                                        <apex:outputLabel value="{!fieldValue}" onclick="sortRecords('{!fieldValue}','{!upArrow}');"/> 
+                                        <apex:image value="{!$Resource.UpwardImage}" height="10" width="10" rendered="{!upArrow && (fieldValue==sortByFieldValue)}"/>
+                                        <apex:image value="{!$Resource.DownwardArrow}" height="10" width="10" rendered="{!!upArrow && (fieldValue== sortByFieldValue)}"/>
+                                        <!--<apex:image value="{!$Resource.updown}" height="15" width="15" rendered = "true"/>-->
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:outputText value="{!obj.cont[fieldValue]}"/>
+                            </apex:column> 
+                        </apex:repeat>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="<<Previous" action="{!previous}" rendered="{!hasPrevious}" reRender="ThePage" />
+                <apex:panelGroup rendered="{!hasNext || hasPrevious}" id="buttons">
+                    <apex:outputText value="Page  "/>
+                    <apex:inputText value="{!pageNumber}" size="1" onchange="getRecords();"/>
+                    <apex:outputText value=" of {!totalPages}" />
+                </apex:panelGroup>
+                <apex:commandButton value="Next >>" action="{!next}" rendered="{!hasNext}" reRender="ThePage" />
+            </apex:pageBlockButtons> 
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,71 @@
+<apex:page standardController="sfcloud1__iClone__c" extensions="sfcloud1.iClone_RedirectObj" action="{!initPage}" title="iClone :: Select Parent Object">
+
+    <style>
+        .error {
+            color: red;
+            font-weight: strong;
+            font-size: 1.3em;
+        }
+        .error1 {
+            color: red;
+            font-weight: strong;
+            font-size: 1.1em;
+        }
+        .bold {
+            color: black;
+            font-size: 1.5em;
+        }
+        .bold1 {
+            font-weight: bold;
+            font-size: 1em;
+        }
+    </style> 
+    
+    <apex:pageMessages id="messages" escape="false" />
+    
+    <br/>
+    
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td style="width: 550px" class="error1">
+                    Click <a href="/{!returnURL}" title="Go back to previous page">here</a> to go back to previous page.                                
+                </td>
+                <td style="text-align: right;">                 
+                    <a href="https://appexchange.salesforce.com/listingDetail?listingId=a0N3000000B39tWEAR&tab=r" target="_blank" class="helpLink" title="Rate this app (New Window)">Rate this app</a> | 
+                    <a href="/apex/iClone_Documentation" target="_blank" class="helpLink" title="Help for this Page (New Window)">
+                        {!$ObjectType.iClone__c.Label} Help 
+                    <img src="/s.gif" alt="" class="helpIcon" />
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br/>
+    
+    <apex:form > 
+        
+        <apex:outputPanel id="pnlSelect" rendered="{!IF(optionsParentObj.size>1,true,false)}">
+            <apex:outputLabel value="Select Parent Object & Record Type" styleClass="bold" />
+            <apex:pageBlock >
+                <apex:selectList value="{!parentObj_selected}" size="1">
+                    <apex:selectOptions value="{!optionsParentObj}" />
+                    <apex:actionSupport event="onchange" action="{!getRecordType}" rerender="pnlSelect" status="loading1"/>   
+                </apex:selectList>  
+                &nbsp;&nbsp;
+                <apex:selectList value="{!recordType_sObj}" size="1" rendered="{!IF(optionsRecordType.size>1,true,false)}">
+                    <apex:selectOptions value="{!optionsRecordType}" />
+                    <apex:actionSupport event="onchange"  action="{!createParent}" status="loading1"/>   
+                </apex:selectList>
+                &nbsp;&nbsp;
+                <apex:actionStatus id="loading1"  startText=" (loading...)" /> 
+            </apex:pageBlock>
+        </apex:outputPanel>
+        
+    </apex:form>    
+    
+    <br/><br/><hr />
+    We are listening. Please <a title='sfsupport@adroitus.com' href='mailto:sfsupport@adroitus.com'><span class="helpLink">Email</span></a> us if you need any help customizing the app or need technical support.
+    
+</apex:page>

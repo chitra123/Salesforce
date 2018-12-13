@@ -1,0 +1,19 @@
+<aura:component >
+    <aura:attribute name="optionsList" type="List" description="list of options to be displayed"/>
+    <aura:attribute name="label" type="String" description="Label name to be displayed for field" required="true"/>
+    <aura:attribute name="selectedValue" type="String" />
+    <aura:attribute name="defaultValue" type="Boolean" default="false"/>
+    <aura:attribute name="required" type="boolean" default="false"/>
+    
+    <aura:registerEvent name="setValue" type="c:ParameterEvent"/>
+    <aura:method name="addPicklistVal" action="{!c.loadOptions}" access="public">
+    	<aura:attribute name="listOpts" type="String" />
+    </aura:method>
+        
+    <lightning:select name="select" label="{!v.label}" aura:id="sel" value="{!v.selectedValue}" required="{!v.required}" onchange="{!c.setDropdownVal}">
+        <aura:iteration items="{!v.optionsList}" var="item">
+            <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}" aura:id = "options"/>
+        </aura:iteration>
+    </lightning:select>
+    
+</aura:component>

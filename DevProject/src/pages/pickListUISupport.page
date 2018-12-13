@@ -1,0 +1,70 @@
+<apex:page standardcontroller="Account" extensions="pickListUISupportcontroller">
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.4.2.min.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.6.custom.min.js')}"  />
+    <apex:stylesheet value="{!URLFOR($Resource.jQuery, '/css/ui-lightness/jquery-ui-1.8.6.custom.css')}"  />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+   <script type="text/javascript">
+        j$ = jQuery.noConflict();
+        jQuery(document).ready(function(){
+            j$('[id$="contList"]').prop('disabled',true);
+            j$('[id$="caseList"]').prop('disabled',true);
+            
+            j$('[id$="contList"]').change(function(){
+            	j$('[id$="contList"]').prop('disabled',false);
+            	j$('[id$="caseList"]').prop('disabled',true);
+       		});
+       		
+       		j$('[id$="contList"]').change(function(){
+            	j$('[id$="caseList"]').prop('disabled',false);
+       		});
+       		
+       		
+       		j$('[id$="accList"]').change(function(){
+            	j$('[id$="contList"]').prop('disabled',true);
+            	j$('[id$="caseList"]').prop('disabled',true);
+       		});
+        });
+        
+    </script>
+    
+    
+    <apex:form id="form">
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="2" id="pgBlock">
+                <apex:selectList size="1" label="Accounts" value="{!selectedAccounts}" id="accList" >
+                    <apex:selectOptions value="{!accountSelectOptionList}"/>
+                   	<apex:actionSupport event="onchange" rerender="contList" status="loading1"/>
+                </apex:selectList>
+                <apex:actionstatus id="loading1">
+                	<apex:facet name="start" >
+                		<apex:image value="{!$Resource.loadingImg}" height="40" width="60"/>
+               		</apex:facet>
+                </apex:actionstatus>
+                <apex:selectList size="1" label="Contacts"  value="{!selectedContact}"  Id="contList">
+                    <apex:selectOptions value="{!contactSelectOptionList}" />
+                     <apex:actionSupport event="onchange" rerender="caseList" status="loading2"/>
+                   <!-- <apex:actionSupport event="onchange" action="{!getCases}" >
+                        <apex:param value="this.value" assignTo="{!selectedContact}" name="cont">
+                        </apex:param>
+                    </apex:actionSupport> --> 
+                </apex:selectList>
+                
+                <apex:actionstatus id="loading2">
+                	<apex:facet name="start" >
+                		<apex:image value="{!$Resource.loadingImg}" height="40" width="60"/>
+               		</apex:facet>
+                </apex:actionstatus>
+                
+                <apex:selectList size="1" label="Cases" id="caseList">
+                    <apex:selectOptions value="{!casesSelectOptionList}">
+                    </apex:selectOptions>
+                </apex:selectList>
+               
+                 <!-- <apex:actionFunction name="fetchCase" action="{!getcontacts}" >
+                   <!-- <apex:param value="" assignTo="{!selectedAccounts}" name="contact" />  
+                </apex:actionFunction>     -->
+            </apex:pageBlockSection>
+        </apex:pageBlock>   
+    </apex:form>
+</apex:page>

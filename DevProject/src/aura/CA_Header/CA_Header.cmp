@@ -1,0 +1,38 @@
+<aura:component>
+    <div class="c-container" style = "background-color: rgba(236, 235, 234, 0.7);">
+        <lightning:layout horizontalAlign="space">
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box">
+                    <img src="{!$Resource.Logo}" style = "width: 300px;"/>
+                </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" alignmentBump="left">
+                <div class="custom-box"><a href = "https://members.copyright.com.au/License" target = "_blank">Licenses &amp; Permissions</a></div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box">|</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box"><a href = "#" target = "_blank">Membership</a></div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box">|</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box"><a href = "#" target = "_blank">Cultural Fund</a></div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box">|</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box"><a href = "#" target = "_blank">News &amp; Events</a></div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box">|</div>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small">
+                <div class="custom-box"><a href = "#" target = "_blank">Register Now</a></div>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

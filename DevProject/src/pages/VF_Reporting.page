@@ -1,0 +1,27 @@
+<apex:page controller="VF_ReportingController" action="{!getAccountOwner}">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:pageBlockTable value="{!accOwnerList}" var="acc">
+                    <apex:column title="Owner" headerValue="Owner">
+                        <apex:outputText value="{!acc}"></apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Total Active Advisors">
+                        <apex:outputText value="{!contactCount[acc]}"></apex:outputText>
+                    </apex:column>
+                    <apex:column headerValue="Total Active Companies">
+                        <apex:outputText value="{!accountCount[acc]}"></apex:outputText>
+                    </apex:column>  
+                    <apex:repeat value="{!listSt}" var="l">                                                                              
+                    <apex:column headerValue="{!l}">                    
+                        <apex:dataTable value="{!accOwnerList}" var="aa">
+                            <apex:column value="{!aa}" headerValue="col1"/>
+                            <apex:column headerValue="col2"/>
+                        </apex:dataTable>
+                    </apex:column>   
+                    </apex:repeat>                               
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>  
+</apex:page>

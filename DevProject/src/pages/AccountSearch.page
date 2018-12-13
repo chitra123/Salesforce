@@ -1,0 +1,90 @@
+<apex:page standardController="Account" extensions="accountSearch">
+    <script>
+        function checkLen(){
+            var name = document.getElementById('{!$Component.formId.pageId.pageBlockId.inputName}').value;           
+            var n = name.length;   
+            if(n<3){
+                alert('Enter minimum 3 letters to search')            
+            }
+            else{   
+                searchAccount();
+            }    
+         }
+         
+                 
+         function conf(id){
+             var answer = confirm('Are you sure?');
+             if(answer){
+                  deleteAccount(id);
+             }
+             
+         }  
+           
+         function windowPop(id){ 
+                 var url =  '/'+id+'//e?retURL=%2F' + id;       
+                 window.open(url,'Popup','sc​rollbars=yes');
+          } 
+          
+          function selectedAccount(checkbox,accid){
+                if(checkbox.checked)
+                    alert(accid);
+                    
+                reRenderBlock();        
+          }       
+                      
+    </script>
+    <apex:form id="formId">
+        <apex:pageBlock id="pageId">
+            <apex:pageMessage summary="No records found" rendered="{!flag}" severity="info" >
+            </apex:pageMessage>
+            <apex:pageBlockSection id="pageBlockId">
+                <apex:inputText value="{!word}" label="Account name" id="inputName"/>
+                 <apex:commandButton value="Search" onclick="checkLen();return false;"/>
+                 <apex:actionFunction action="{!searchAccount}" name="searchAccount" reRender="result,pageId"/>              
+            </apex:pageBlockSection> 
+             
+            <apex:pageBlockSection id="result">          
+                   <apex:dataTable value="{!accountList}" var="acc" cellpadding="2" cellspacing="4" id="tbl">
+                       <!--  <apex:column >
+                            <apex:inputcheckbox value="{!isSelected}">
+                                < apex:actionSupport event="onclick" action="{!getSelectedAccounts}" reRender="result">
+                                </apex:actionSupport>
+                            </apex:inputcheckbox>                   
+                        </apex:column> -->
+                        <apex:column >
+                        <!--apex:commandLink action="https://ap1.salesforce.com/{!selectId}/e?retURL=%2F{!selectId}" value="Edit" reRender="result">
+                            <apex:param name="selectId" assignTo="{!selectId}" value="{!acc.id}" id="pid"/>
+                        </apex:commandLink>-->
+                            <apex:commandLink onclick="windowPop('{!acc.id}');return false" value="Edit"></apex:commandLink>
+                         </apex:column>
+                    <apex:column id="colId">
+                       <apex:commandLink value="Del" onclick="conf('{!acc.id}');" reRender="result" id="cmdId">
+                            <apex:param name="selectId" assignTo="{!selectId}" value="{!acc.id}"/>
+                        </apex:commandLink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:outputText value="{!acc.name}"/>
+                    </apex:column>
+                    <!-- apex:column >
+                        <apex:repeat value="{!selAccount}" var="a">
+                            <apex:outputText value="{a.AccountId}"></apex:outputText>
+                        </apex:repeat>
+                   </apex:column>
+                   <apex:column >
+                        <apex:repeat value="{!selectedAccounts}" var="a">
+                            <apex:outputText value="{a.AccountId}"></apex:outputText>
+                        </apex:repeat>
+                   </apex:column> -->
+                </apex:dataTable> 
+                <apex:actionFunction action="{!DeleteAcc}" name="deleteAccount" reRender="result">
+                    <apex:param name="selId" assignTo="{!selId}" value="selId"/>
+                </apex:actionFunction> 
+                <!--apex:actionfunction action="{!getSelectedAccounts}" name="selectAccount" reRender="result">
+                    <apex:param name="accName" assignTo="{!accName}" value=""></apex:param>
+                </apex:actionfunction>
+                <apex:actionfunction reRender="result" name="reRenderBlock"></apex:actionfunction>-->
+               
+               </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

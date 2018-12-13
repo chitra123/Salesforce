@@ -1,0 +1,7 @@
+.THIS .showResults{
+	display:block;
+}
+
+.THIS .svgMargin svg{
+    margin : 2.5px !important;
+}

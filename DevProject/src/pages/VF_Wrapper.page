@@ -1,0 +1,17 @@
+<apex:page >
+    <apex:includescript value="{!$Site.BaseUrl}/lightning/lightning.out.js?v=2" />     
+    <apex:includescript value="/support/api/33.0/interaction.js"/>
+    <apex:includescript value="/support/console/33.0/integration.js"/>  
+    <div id = "compId"></div>
+    <script>
+    var compId;
+    	$Lightning.use("c:MultiuserCalApp", function() {
+          $Lightning.createComponent("c:MultiuserCal",{},
+          "compId",
+          function(cmp) {
+            compId = cmp;
+          });
+        });
+    </script>
+    
+</apex:page>

@@ -1,0 +1,21 @@
+<apex:page standardController="account" extensions="AccList">
+    <script>
+        function accountList(){
+            list();
+        }
+    </script>
+        <apex:form >
+            <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:inputText value="{!key}" label="Name"  onkeyup="accountList();"/>
+                <apex:actionFunction name="list" action="{!getAccounts}" reRender="abc"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection id="abc">
+                    {!key}
+                    <apex:repeat value="{!accLi}" var="a">
+                        <apex:outputText value="{!a.name}"></apex:outputText> 
+                    </apex:repeat>
+                 </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+</apex:page>

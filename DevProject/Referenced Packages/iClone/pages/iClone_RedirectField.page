@@ -1,0 +1,1 @@
+<apex:page standardController="sfcloud1__iClone_Fields__c" extensions="sfcloud1.iClone_RedirectField" action="{!initPage}" Title="iClone :: Configure Fields" />

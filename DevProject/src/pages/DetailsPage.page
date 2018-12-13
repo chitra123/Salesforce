@@ -1,0 +1,37 @@
+<apex:page standardController="Contact" contentType="application/msword" extensions="patient">
+   <apex:image id="theImage" value="{!$Resource.hms}" width="300" height="100"/>
+      <br></br>     
+    <hr><hr>
+    </hr></hr>
+        <h3>Patient Details</h3>
+    <table width='300' cellspacing='2'>
+        <tr><td>Patient Name:</td><td>{!contact.name}</td></tr>
+     </table> 
+      <apex:form >
+          <apex:pageBlock >       
+          <apex:pageBlockSection columns="2" showHeader="true">        
+              </apex:pageBlockSection>
+                <br></br><apex:pageBlockSection title="Cases:">
+                    <apex:pageBlockTable value="{!cs}" var="c" border="2" width="500">
+                        <apex:column value="{!c.casenumber}"/>
+                        <apex:column value="{!c.account.name}"/>
+                         <apex:column value="{!c.owner.name}" />
+                        <apex:column value="{!c.createddate}"/> 
+                         <apex:column value="{!c.status}"/>    
+                 </apex:pageBlockTable>
+              </apex:pageBlockSection>
+             </apex:pageBlock>
+           <br><hr></hr></br>
+       <apex:pageBlock title="Patient Payment Details"><br></br>
+           <apex:pageBlockSection >
+                <apex:pageBlockTable value="{!pay}" var="p" border="2" width="500">
+                    <apex:column value="{!p.name}"/>
+                     <apex:column value="{!p.Payment_Amount__c}"/>
+                     <apex:column value="{!p.Payment_Date__c}"/>
+                     <apex:column value="{!p.Status__c}"/>
+                </apex:pageBlockTable>
+           </apex:pageBlockSection>
+       </apex:pageBlock><br></br>
+       <hr></hr>
+          </apex:form>   
+</apex:page>

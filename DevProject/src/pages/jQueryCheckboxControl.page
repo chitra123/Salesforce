@@ -1,0 +1,56 @@
+<apex:page tabstyle="Account">
+	<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.4.2.min.js')}"  />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.6.custom.min.js')}"  />
+    <apex:stylesheet value="{!URLFOR($Resource.jQuery, '/css/ui-lightness/jquery-ui-1.8.6.custom.css')}"  />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+	<script>
+		j$ =  jQuery.noConflict();
+		jQuery(document).ready(function(){
+			j$('[id$="Section"]').hide();
+			
+			j$('[id$="checkbox"]').change(function(){
+				if(j$('[id$="checkbox"]').prop('checked')){
+					j$('[id$="Section"]').show();
+				}
+				else{
+					j$('[id$="Section"]').hide();
+				}
+			});
+			
+			j$('[id$="name"]').keyup(function(event){
+				
+				var letters = /^[A-Za-z]+$/;
+				var inputval = j$('[id$="name"]').val();
+				if(!letters.test(inputval)){
+					if(event.which != 8){
+						alert('Enter only alphabets');
+					}
+				}
+			});
+			
+			j$('[id$="Number"]').keyup(function(event){
+				
+				var numbers = /^[0-9]+$/;
+				var inputval = j$('[id$="Number"]').val();
+				if(!numbers.test(inputval)){
+					if(event.which != 8){
+						alert('Enter only Numerical values');
+					}
+				}
+			});
+		});
+		
+	</script>
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockSection >
+				<apex:inputCheckbox id="checkbox" label="Select "/>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="Please Enter valid Details" id="Section">
+				<apex:inputText id="name" label="Name" title="Enter only alphabets"/>
+				<apex:inputText id="Number"  label="Number"/>
+				<apex:inputText id="Special"  label="Special Characters"/>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

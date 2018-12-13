@@ -1,0 +1,13 @@
+<aura:component >
+    <aura:attribute name="parentAttr" type="String" default="parent attribute"/>
+	
+    <div class="slds-box">
+        <!-- Instantiate the child component -->
+        <c:child childAttr="{#v.parentAttr}" />
+        <br/>
+        <p>parentExpr parentAttr: {!v.parentAttr}</p>
+        <p><lightning:button label="Update parentAttr"
+                             onclick="{!c.updateParentAttr}"/></p>
+        
+    </div>
+</aura:component>

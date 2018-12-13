@@ -1,0 +1,6 @@
+<apex:page standardController="Account">
+    <apex:form >
+       <apex:outputField value="{!account.id}"/> 
+        <apex:commandButton value="Edit" action="{!Edit}"/>
+    </apex:form>
+</apex:page>

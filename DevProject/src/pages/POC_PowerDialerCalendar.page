@@ -1,0 +1,125 @@
+<apex:page controller="POC_PowerDialerCalendarController" standardStylesheets="false" showHeader="false" docType="html-5.0" applyBodyTag="false">
+    <head>
+        <c:AngularResource ></c:AngularResource>
+        <script type = 'text/javascript'>
+        
+            angular.module('myApp',[])
+            .controller('myTestCltrl', function($scope){
+                
+                $scope.groupValues = [];
+                $scope.groupMemberValues = [];
+                $scope.disable = '';
+                $scope.disableAdv = '';
+                $scope.Criteria = {};
+               	
+                $scope.getGroupValues = function(){
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.POC_PowerDialerCalendarController.getAllGroups}', function(result,event){
+                    	if(result.Message == 'Success'){
+                            $scope.disable = false;
+                        	$scope.groupValues = result.Data;
+                            $scope.Criteria.GroupName = $scope.groupValues[0];
+                        }
+                        else{
+                            $scope.groupValues = [{"Id":"", "DeveloperName":"No groups found"}]
+                            $scope.Criteria.GroupName = $scope.groupValues[0];
+                        	$scope.disable = true;
+                        }
+                        
+                        $scope.$apply();
+                    });
+                    
+                };
+                
+                $scope.getAdvisorName = function(){
+                    
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.POC_PowerDialerCalendarController.getAdvisorsOfGroups}', JSON.stringify($scope.Criteria.GroupName), function(result,event){
+                    	if(result.Message == 'Success'){
+                        	$scope.groupMemberValues = result.Data;
+                            $scope.Criteria.AdvisorName = $scope.groupMemberValues[0];
+                            $scope.disableAdv = false;
+                        }
+                        else{
+                            $scope.groupMemberValues = [{"Id":"","Name":"No Advisors Found"}];
+                            $scope.Criteria.AdvisorName = $scope.groupMemberValues[0];
+                            $scope.disableAdv = true;
+                        }
+                        $scope.$apply();
+                    });
+                };
+                
+                $scope.createNewEvent = function(){
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.POC_PowerDialerCalendarController.createEvent}', $scope.Criteria, function(result,event){
+                        $scope.$apply();
+                    });
+                };
+                
+                $scope.getGroupValues();
+                
+                $(function(){
+                    $('#datetimepicker3').datetimepicker({
+                    pickDate: false
+                    });
+                    $('#datetimepicker').datetimepicker({
+                        pickDate: false
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h3>Schedule an Appointment</h3>
+        <div class = "form-horizontal">
+            <div ng-app = "myApp" ng-controller = "myTestCltrl">
+                <div class="form-group">
+                    <label for = "date" class="col-sm-2 control-label">Date</label>
+                    <div class="col-sm-5">
+                        <input type = "date" ng-model = "Criteria.scheduleDate" placeholder = "Date" id = "date" class="form-control"/>
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class="col-lg-5 form-group">
+                        <div id="datetimepicker3" >
+                            <label for = "fromTime" class="col-sm-5 control-label">Time From</label>
+                            <div class="col-sm-5">
+                                <input placeholder = "HH:MM:SS" data-format="hh:mm:ss" type="text" id= "fromTime" class = "form-control" ng-model = "Criteria.fromTime"/>
+                            </div>
+                            <span class="add-on">
+                                <i class="glyphicon glyphicon-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-5 form-group">
+                        <div id="datetimepicker">
+                            <label for = "toTime" class="col-sm-2 control-label">Time To</label>
+                            <div class="col-sm-5">
+                                <input type="text" data-format="hh:mm:ss" id = "toTime" class = "form-control" placeholder = "HH:MM:SS"/>
+                            </div>
+                            <span class="add-on">
+                                <i class="glyphicon glyphicon-time"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for = "groupList" class="col-sm-2 control-label">Groups</label>
+                    <div class = "col-sm-5">
+                        <select class="form-control input-sm" ng-model = "Criteria.GroupName" ng-options = "value.DeveloperName for value in groupValues track by value.Id" ng-disabled = "disable" ng-change = "getAdvisorName();"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for = "groupList" class="col-sm-2 control-label">Groups</label>
+                    <div class = "col-sm-5">
+                        <select class="form-control input-sm" ng-model = "Criteria.AdvisorName" ng-options = "value.Name for value in groupMemberValues track by value.Id" ng-disabled = "disableAdv"></select>
+                    </div>
+                </div>
+                <div class = "form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-default">View Full Calendar</button>
+                        <button type="button" class="btn btn-primary" ng-click = "createNewEvent()">Create New Event</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

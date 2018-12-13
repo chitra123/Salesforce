@@ -1,0 +1,38 @@
+<aura:component >
+	<!--<ltng:require scripts="{!join(',', $Resource.jquerymin, $Resource.Moment, $Resource.DatePicker_aljs + '/jquery.aljs-init.min.js', 
+                           $Resource.DatePicker_aljs + '/jquery.aljs-datepicker.min.js')}"/>-->
+    <ltng:require scripts="{!$Resource.jquerymin}"/>
+    <ltng:require scripts="{!$Resource.Moment}"/>
+    <ltng:require scripts="{!$Resource.AljsInitjs}"/>
+    <ltng:require scripts="{!$Resource.AljsMinJS}" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+
+	<!-- attributes for Calendar SVG Icon -->
+    <aura:attribute name="svgPath"        default="/resource/SLDS100/assets/icons/utility-sprite/svg/symbols.svg#event" type="String" description="the path for the icon in the static resource, this will be use in a SVG use tag" />
+    <aura:attribute name="name"           default="event" type="String" description="Symbol name of icon" />
+    <aura:attribute name="class"          default="slds-icon-text-default slds-input__icon" type="String" description="the class of this SVG tag, can be use for CSS purpose" />
+    <aura:attribute name="containerClass" default="" type="String" description="Container class name for span container of icon" />
+    <aura:attribute name="category"       default="utility" type="String" description="Category of icon- action, standard, utility etc." />
+    <aura:attribute name="size"           default="small" type="String" description="Size of icon-- small, medium, large" />
+    <aura:attribute name="assistiveText"  default="Calendar Icon" type="String" description="Description name of icon" />
+    <aura:attribute name="xlinkHref" type="String" description="SLDS icon path. Ex: /assets/icons/utility-sprite/svg/symbols.svg#download" />
+    <aura:attribute name="ariaHidden" type="String" default="true" description="aria-hidden true or false. defaults to true" />
+	
+    <!-- attributes to get selected date -->
+    <aura:attribute name="selectedDate" default="" type="Date"/>
+    <aura:attribute name="dateLabel" default="" type="String"/>
+    <aura:attribute name="dateFormat" default="YYYY/MM/DD" type="String" description="Format for date picker"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:registerEvent name="setValue" type="c:ParameterEvent"/>
+    
+    <div class = "slds">
+        <span id="CurrentDate"></span>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="date">{!v.dateLabel}</label>
+            <div class = "slds-form-element__control slds-input-has-icon slds-input-has-icon--right"  aura:id="containerDt">
+                <input id="date" class="slds-input date datepicker"  type="text" placeholder="Pick a Date" label="Date Picker Label" name = "date" aura:id = "inputDt"></input>
+                <span aura:id="assistiveText" class="slds-assistive-text">{!v.assistiveText}</span>
+            </div>
+        </div>
+    </div>
+</aura:component>

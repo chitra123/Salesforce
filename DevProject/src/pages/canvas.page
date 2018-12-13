@@ -1,0 +1,7 @@
+<apex:page standardController="Account">
+    <!--apex:canvasApp developerName="TestApp"/!-->   
+  <div>
+  <apex:iframe src="https://www.facebook.com/" width="800" height="600" />
+  </div>
+
+</apex:page>

@@ -1,0 +1,30 @@
+<apex:page controller="CreateContactController">
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.11/angular.min.js"/>
+    <script>
+        angular.module("ngApp", []).controller('contController',function($scope){
+        
+        $scope.insertContact = function(){
+            if($scope.lastName == null){
+                alert('Last Name cannot be null');
+            }
+            else{
+                Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.CreateContactController.createContact}',$scope.firstName,$scope.lastName,function(result,event){
+                    if(event.status && result != null){
+                        window.location.href = '/' + result;
+                    }
+                    else{
+                        alert(result);
+                    }
+                });
+            }
+        };
+        });
+    </script>
+    <div ng-app="ngApp" ng-controller = "contController">
+        <label>First Name:</label>
+        <input type="text" ng-model="firstName"/><br/>
+        <label>Last Name:</label>
+        <input type="text" ng-model="lastName"/><br/>
+        <button type="button" ng-click = "insertContact()">Save</button>
+   </div>
+</apex:page>

@@ -1,0 +1,22 @@
+<apex:page standardStylesheets="false" standardController="Account" extensions="availableAccounts">
+<apex:includeScript value="{!$Resource.auto}"/>
+<apex:includeScript value="{!$Resource.suggest}"/>
+
+    <script>
+      $(function(){   
+         var availableTags = document.getElementById('{!$Component.formId.txtId}').value;
+         alert(availableTags);
+         
+         $("#tags").autocomplete({source:availableTags});
+          });
+         </script>
+<apex:form id="formId">         
+  <div class="ui-widget">  
+         <label for="tags">Tags: </label>
+         <input id="tags"></input></div>     
+<apex:inputHidden value="{!AccountName}" id="txtId"></apex:inputHidden> 
+<apex:repeat value="{!AccList}" var="a" id="repeatId">
+    <apex:inputText value="{!a.name}" id="txt"/>
+</apex:repeat>
+</apex:form>       
+</apex:page>

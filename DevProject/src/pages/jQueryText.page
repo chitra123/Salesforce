@@ -1,0 +1,63 @@
+<apex:page >
+<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-1.4.2.min.js')}"  />
+<apex:includeScript value="{!URLFOR($Resource.jQuery, '/js/jquery-ui-1.8.6.custom.min.js')}"  />
+<apex:stylesheet value="{!URLFOR($Resource.jQuery, '/css/ui-lightness/jquery-ui-1.8.6.custom.css')}" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<apex:stylesheet value="{!$Resource.SignaturePadcss}"  />
+<apex:includeScript value="{!$Resource.jquerymin}"  />
+<apex:includeScript value="{!$Resource.jquerysignaturepadmin}"  />
+<apex:includeScript value="{!$Resource.jquerysignaturepad}"  />
+<apex:includeScript value="{!$Resource.json2min}"  />
+<apex:flash src="{!$Resource.flashCanvas}" height="100" width="100"/>
+<!-- 
+<script>
+	j$ = jQuery.noConflict();
+		jQuery(document).ready(function() {  
+			alert('ready');
+			j$('[id$="signature"]').click(function() {
+				alert('a');
+   		});
+   		j$('[id$="signature"]').jSignature();
+   		});
+	</script>
+	<apex:form id="signature">
+		<apex:pageBlock >
+			<apex:pageBlockSection >
+				<canvas class="pad" width="198" height="55"></canvas>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form> -->
+<html>	
+<script>
+	$(document).ready(function () {
+	  $('.sigPad').signaturePad();
+	});
+</script>	
+<head>
+ <title>Accept a Signature · Signature Pad</title>
+  <style>
+    body { font: normal 100.01%/1.375 "Helvetica Neue",Helvetica,Arial,sans-serif; }
+  </style>
+  </head>
+  <body>
+<form method="post" action="" class="sigPad">
+  <label for="name">Print your name</label>
+  <input type="text" name="name" id="name" class="name"></input>
+  <p class="typeItDesc">Review your signature</p>
+  <p class="drawItDesc">Draw your signature</p>
+  <ul class="sigNav">
+    <li class="typeIt"><a href="#type-it" class="current">Type It</a></li>
+    <li class="drawIt"><a href="#draw-it">Draw It</a></li>
+    <li class="clearButton"><a href="#clear">Clear</a></li>
+  </ul>
+  <div class="sig sigWrapper">
+    <div class="typed"></div>
+    <canvas class="pad" width="198" height="55"></canvas>
+    <input type="hidden" name="output" class="output"></input>
+  </div>
+  <button type="submit">I accept the terms of this agreement.</button>
+</form>
+</body>
+</html>
+</apex:page>

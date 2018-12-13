@@ -1,0 +1,16 @@
+<apex:page controller="TimeTableController" tabstyle="Contact">
+	<apex:form >
+		<apex:pageBlock >
+			<apex:pageBlockSection title="timetable">
+				<apex:repeat value="{!wrapperMap[className]}" var="t">
+				    <apex:repeat value="{!t.teacherSubj}" var="l">
+				    	<apex:outputText value="{!l}"/>
+				    </apex:repeat>
+				</apex:repeat>
+			  </apex:pageBlockSection>
+			  <apex:pageBlockSection columns="1">
+			  	<apex:commandLink value="Back" action="https://c.ap1.visual.force.com/apex/GenerateTimeTable?id={!teacherId}"  coords="center-x, center-y, radius"/>
+			  </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

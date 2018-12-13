@@ -1,0 +1,73 @@
+<apex:page controller="Test_HomeController"  standardStylesheets="false" id="Trainingdatepage" showHeader="false" sidebar="false" docType="html-5.0">
+    
+    <!-- Lightning Design System Source -->
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- MomentJS CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.js"></script>
+    <!-- Important To Include ALJS init File-->
+    <script src="{!URLFOR($Resource.aljs, '/jquery.aljs-init.min.js')}"></script>
+    <!-- ALJS Datepicker Module-->
+        <script src="{!URLFOR($Resource.aljs, '/jquery.aljs-datepicker.min.js')}"></script>
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        
+        <style>
+            .redcolor {
+            color: red !important;
+            font-weight: bold;
+            }
+            .normalcolor {
+            font-weight: normal;
+            }
+            
+        </style>
+        
+        <apex:form id="form"> 
+            <div class="slds">
+                <div class="slds-form-element"> 
+                    <span id="CurrentDate"></span>
+                    
+                    <div class="slds-form-element__control" style="width:200px;">
+                        <div class="slds-input-has-icon slds-input-has-icon--right">
+                            <div>
+                                <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                                    <use xlink:href="{!URLFOR($Resource.SLDS100, '/assets/icons/utility-sprite/svg/symbols.svg#event')}"></use>
+                                </svg> 
+                                <apex:input id="date" styleclass="{! IF(showRedFont,'redcolor slds-input date','normalcolor slds-input date')}" type="text" value="{!displayDate}"  label="Date Picker Label"/>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="SelectedDate"></span>
+                </div>
+                
+                <apex:commandButton action="{!saveRecord}" styleClass="slds-button slds-button--neutral" value="Save" id="saveButton" rendered="{!bEditMode}"/>
+            </div>
+        </apex:form>
+        
+        <script>
+        var j$ = jQuery.noConflict();
+        //Assigning SLDS Static Resource Path To A Variable To Use It With ALJS Initialization
+        var assetsLoc = '{!URLFOR($Resource.SLDS100)}';
+        
+        //ALJS Initialization   
+        
+        j$.aljsInit({
+            assetsLocation: assetsLoc, //SLDS Static Resource Path
+            scoped: true
+        });
+        
+        j$(document).ready(function() {
+            
+            //Initializing Datepicker with options To The SLDS Input on document ready.
+            j$('.date').datepicker({
+                format: 'MM/DD/YYYY', //Date Format Of Datepicker Input Field
+                onChange: function(datepicker) {
+                    j$('#SelectedDate').html('Selected Date: <strong>'+moment(datepicker.selectedFullDate._d).format('YYYY/MM/DD')+'</strong>');
+                }
+            });
+        });
+        </script>
+        
+    </html>
+</apex:page>

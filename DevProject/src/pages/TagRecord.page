@@ -1,0 +1,53 @@
+<apex:page id="tagpg" standardController="Account" extensions="TagRecord_Controller" showHeader="false" sidebar="false" standardStylesheets="false">
+
+<!--initialize JS variables-->
+<script> var tags = {!systemTags};</script>
+
+<!--Populate configurable CSS colors-->
+<style>
+.mybtn{background-color:{!mapCSSValues['Button']};border-color:{!mapCSSValues['Button Border']};}
+.cspan{background-color:{!mapCSSValues['Tags']};border-color:{!mapCSSValues['Tags Border']};}
+</style>
+
+<!--include all the required bootstrap scripts and stylesheets-->
+<apex:includeScript value="{!URLFOR($Resource.Tagging, 'js/jquery-1.11.3.min.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.Tagging, 'js/typeahead.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.Tagging, 'js/TaggingCustom.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.Tagging, 'css/typeahead.css')}"/>
+
+<apex:form id="frm">
+
+    <apex:outputPanel id="tagErr"> 
+        <apex:outputPanel layout="block" styleClass="errbox error-text" rendered="{!showError}">
+            <apex:outputLabel id="errLbl" value="{!strErrorText}"/>
+        </apex:outputPanel>
+    </apex:outputPanel>
+
+    <div id="accountTags">
+        <apex:outputPanel id="exTag">
+            <apex:panelGrid id="pnlGrid" columns="10">
+                <apex:repeat value="{!lstExistingTags}" var="tag">
+                    <apex:outputPanel styleClass="cspan">{!tag.Tag__r.Tag_Name__c} 
+                        <apex:outputPanel styleClass="tag-close" onclick="delTag('{!tag.Id}')">
+                            <apex:outputText > x </apex:outputText>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:repeat>
+            </apex:panelGrid>
+        </apex:outputPanel>
+        <br/>
+        
+        <div>
+            <apex:outputPanel id="inpnl" styleClass="inpnl">
+                <apex:inputField id="tagName" value="{!newTag.Tag_Name__c}" styleClass="typeahead" html-placeholder="Search Tags"/>
+                <apex:commandButton id="svbtn" value="Add Tag" action="{!saveTag}" styleClass="mybtn" reRender="exTag, tagErr, pgmsg, inpnl" onComplete="autoSearch();"/>
+            </apex:outputPanel>
+        </div>
+    </div>
+
+    <apex:actionFunction id="acfunc" name="delTag" action="{!deleteTag}" reRender="exTag" immediate="true">
+        <apex:param name="delId" value=""/>
+    </apex:actionFunction>
+
+</apex:form>
+</apex:page>

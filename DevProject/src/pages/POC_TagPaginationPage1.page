@@ -1,0 +1,26 @@
+<apex:page standardController="Task" extensions="POC_TagPagination" id="mypage">
+    <apex:includeScript value="{!$Resource.jquerymin}"  />
+    <apex:includeScript value="{!$Resource.DatatableJS}"/>
+    <apex:stylesheet value="/Resource/DatatableCSS.css"/>
+    
+    <script>
+        $ = jQuery.noConflict();
+        $(document).ready(function(){
+            $('#demo_table').DataTable({
+                POC_TagPagination.getResult(function(result,event)){
+                    $('#demo_table').DataTable().fnadddata(result);
+                });
+            });
+        });
+    </script>
+    <table id= "demo_table" >
+        <thead>
+            <tr>
+                <td>Status</td>
+                <td>Assigned To</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    
+</apex:page>

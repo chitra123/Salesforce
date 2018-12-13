@@ -1,0 +1,11 @@
+<apex:page controller="testclass" standardStylesheets="false">
+    <apex:form id="form">
+        <apex:commandButton value="button1" action="{!chkContent}" reRender="form">
+            <apex:param name="flag" value="true" assignTo="{!flag}"/>
+        </apex:commandButton>
+        <apex:commandButton value="button2" action="{!chkContent}" rerender="form">
+            <apex:param name="flag" value="false" assignTo="{!flag}"/>
+        </apex:commandButton>
+        <apex:outputText value="{!out}"></apex:outputText>
+    </apex:form>
+</apex:page>
