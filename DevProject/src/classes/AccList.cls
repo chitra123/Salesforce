@@ -5,8 +5,7 @@ public class AccList{
     public AccList(ApexPages.StandardController controller){
         accLi = new List<Account>();
     }
-    
-    /*trying first commit to master 2*/
+
     /*trying first commit to eclipse*/
     public void getAccounts(){
         String query = '%' + key + '%';
