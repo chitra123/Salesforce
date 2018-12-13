@@ -6,7 +6,7 @@ public class AccList{
         accLi = new List<Account>();
     }
 
-    /*trying first commit to eclipse*/
+    /*trying commiting to git*/
     public void getAccounts(){
         String query = '%' + key + '%';
         accLi = [SELECT name from account where name like : query ];
