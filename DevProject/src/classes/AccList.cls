@@ -6,7 +6,6 @@ public class AccList{
         accLi = new List<Account>();
     }
 
-    /*trying commiting to git via git hub*/
     /*trying commiting to git via desktop2*/
     public void getAccounts(){
         String query = '%' + key + '%';
